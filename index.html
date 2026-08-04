@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>ReViNa 対応ツール</title>
+  <style>
+    :root {
+      --purple: #5b4fcf;
+      --purple-dark: #4338ca;
+      --green: #16a34a;
+      --teal: #0891b2;
+      --text: #1a1a2e;
+      --sub: #64748b;
+      --bg: #f4f4f8;
+      --white: #ffffff;
+      --border: #e5e7eb;
+      --shadow: 0 1px 6px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* HEADER */
+    .header {
+      background: var(--purple);
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .logo { color: white; font-size: 20px; font-weight: 800; }
+    .back-btn {
+      color: rgba(255,255,255,0.9);
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; display: none;
+      align-items: center; gap: 4px;
+    }
+    .logout-btn {
+      color: rgba(255,255,255,0.85);
+      font-size: 13px; font-weight: 600;
+      text-decoration: none;
+    }
+
+    /* SCREENS */
+    .screen { display: none; padding-bottom: 40px; }
+    .screen.active { display: block; }
+
+    /* HOME */
+    .section-card {
+      margin: 20px 16px 0;
+      background: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .section-title {
+      font-size: 14px; font-weight: 700;
+      color: var(--text);
+      padding: 18px 18px 12px;
+    }
+    .team-item {
+      display: flex;
+      align-items: center;
+      padding: 15px 18px;
+      border-top: 1px solid var(--border);
+      cursor: pointer;
+      gap: 14px;
+      transition: background 0.15s;
+    }
+    .team-item:active { background: #f8f8fc; }
+    .team-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+    .team-info { flex: 1; }
+    .team-name { font-size: 15px; font-weight: 700; color: var(--text); }
+    .team-store { font-size: 12px; color: var(--sub); margin-top: 2px; }
+    .arrow { color: #c4c4d0; font-size: 18px; }
+
+    /* FLOW SELECT */
+    .flow-header {
+      padding: 20px 16px 0;
+    }
+    .flow-team-name {
+      font-size: 20px; font-weight: 800; color: var(--text);
+    }
+    .flow-store-name {
+      font-size: 13px; color: var(--sub); margin-top: 4px;
+    }
+
+    /* INPUT CARD */
+    .input-card {
+      margin: 16px 16px 0;
+      background: var(--white);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .input-card-title {
+      font-size: 11px; font-weight: 700; color: var(--sub);
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    .input-row {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 10px;
+    }
+    .input-row:last-of-type { margin-bottom: 0; }
+    .input-row label {
+      font-size: 13px; color: var(--sub); font-weight: 600;
+      white-space: nowrap; min-width: 56px;
+    }
+    .input-row input {
+      flex: 1;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 14px; color: var(--text);
+      outline: none; background: #fafafa;
+    }
+    .input-row input:focus { border-color: var(--purple); background: white; }
+    .slots-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 0 0;
+      border-top: 1px solid var(--border);
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .slots-toggle span { font-size: 13px; color: var(--purple); font-weight: 600; }
+    .slots-arrow { font-size: 11px; color: var(--purple); transition: transform 0.2s; }
+    .slots-arrow.open { transform: rotate(180deg); }
+    .slots-panel { display: none; margin-top: 12px; flex-direction: column; gap: 8px; }
+    .slots-panel.open { display: flex; }
+    .slot-row { display: flex; align-items: center; gap: 10px; }
+    .slot-row label { font-size: 12px; color: var(--sub); font-weight: 600; white-space: nowrap; min-width: 36px; }
+    .slot-row input {
+      flex: 1; border: 1.5px solid var(--border); border-radius: 8px;
+      padding: 6px 10px; font-size: 13px; color: var(--text);
+      outline: none; background: #fafafa;
+    }
+
+    /* FLOW TABS */
+    .flow-tabs {
+      display: flex;
+      margin: 16px 16px 0;
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .flow-tab {
+      flex: 1; padding: 12px 4px;
+      font-size: 12px; font-weight: 700;
+      text-align: center; color: var(--sub);
+      cursor: pointer; border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    .flow-tab.active { color: var(--purple); border-bottom-color: var(--purple); }
+
+    /* STEPS */
+    .steps-wrap { padding: 16px; }
+    .divider-label {
+      font-size: 11px; font-weight: 700; color: var(--sub);
+      letter-spacing: 0.8px; text-transform: uppercase;
+      margin: 20px 0 8px 2px;
+    }
+    .divider-label:first-child { margin-top: 0; }
+    .step-card {
+      background: var(--white); border-radius: 16px;
+      margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden;
+    }
+    .step-head {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px; border-bottom: 1px solid var(--border);
+    }
+    .step-badge {
+      width: 32px; height: 32px; border-radius: 10px;
+      background: var(--purple); color: white;
+      font-size: 13px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-badge.teal { background: var(--teal); }
+    .step-badge.sky  { background: #0ea5e9; }
+    .step-badge.indigo { background: #4f46e5; }
+    .step-info { flex: 1; }
+    .step-title { font-size: 14px; font-weight: 700; color: var(--text); }
+    .step-desc { font-size: 11px; color: var(--sub); margin-top: 2px; }
+
+    /* MESSAGE */
+    .msg-wrap { padding: 14px 16px; }
+    .msg-label {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      color: var(--purple); background: #f0eeff;
+      border-radius: 6px; padding: 3px 10px; margin-bottom: 10px;
+    }
+    .msg-bubble {
+      background: #f8f8fc; border: 1.5px solid #e5e3f5;
+      border-radius: 12px; padding: 14px 16px;
+      font-size: 13px; line-height: 1.8;
+      color: var(--text); white-space: pre-wrap; word-break: break-word;
+    }
+    .msg-bubble a { color: #2563eb; }
+    .copy-btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      width: 100%; background: var(--purple); color: white;
+      border: none; border-radius: 12px; padding: 13px;
+      font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 12px;
+    }
+    .copy-btn.copied { background: var(--green); }
+
+    /* ACTION */
+    .action-wrap { padding: 4px 16px 14px; }
+    .action-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 13px 0; border-bottom: 1px solid var(--border);
+    }
+    .action-item:last-child { border-bottom: none; }
+    .action-item input[type="checkbox"] {
+      width: 22px; height: 22px; accent-color: var(--purple); flex-shrink: 0;
+    }
+    .action-label { flex: 1; font-size: 14px; color: var(--text); font-weight: 500; }
+    .open-link {
+      flex-shrink: 0; background: #f0eeff; color: var(--purple);
+      border: 1.5px solid #d4cff5; border-radius: 8px;
+      padding: 5px 12px; font-size: 12px; font-weight: 700; text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <span class="back-btn" id="backBtn" onclick="goBack()">‹ 戻る</span>
+    <span class="logo">ReViNa</span>
+  </div>
+  <a class="logout-btn" href="/logout">ログアウト</a>
+</header>
+
+<!-- ══ HOME ══ -->
+<div class="screen active" id="screen-home">
+  <div class="section-card">
+    <div class="section-title">チームを選択</div>
+    <div id="teamList"></div>
+  </div>
+</div>
+
+<!-- ══ FLOW ══ -->
+<div class="screen" id="screen-flow">
+  <div class="flow-header">
+    <div class="flow-team-name" id="flowTeamName"></div>
+    <div class="flow-store-name" id="flowStoreName"></div>
+  </div>
+
+  <div class="input-card">
+    <div class="input-card-title">顧客情報</div>
+    <div class="input-row">
+      <label>お客様名</label>
+      <input type="text" id="customerName" placeholder="例：田中" oninput="renderAll()">
+    </div>
+    <div class="input-row">
+      <label>予約日時</label>
+      <input type="text" id="appointmentDate" placeholder="例：8/5(水) 14:00〜" oninput="renderAll()">
+    </div>
+    <div class="slots-toggle" onclick="toggleSlots()">
+      <span>📅 日程候補を編集する</span>
+      <span class="slots-arrow" id="slotsArrow">▼</span>
+    </div>
+    <div class="slots-panel" id="slotsPanel">
+      <div class="slot-row"><label>候補①</label><input type="text" id="slot1" oninput="renderAll()"></div>
+      <div class="slot-row"><label>候補②</label><input type="text" id="slot2" oninput="renderAll()"></div>
+      <div class="slot-row"><label>候補③</label><input type="text" id="slot3" oninput="renderAll()"></div>
+      <div class="slot-row"><label>候補④</label><input type="text" id="slot4" oninput="renderAll()"></div>
+      <div class="slot-row"><label>候補⑤</label><input type="text" id="slot5" oninput="renderAll()"></div>
+    </div>
+  </div>
+
+  <div class="flow-tabs">
+    <div class="flow-tab active" onclick="switchFlow(0)">📩 お問合せ</div>
+    <div class="flow-tab" onclick="switchFlow(1)">🎉 成約後</div>
+    <div class="flow-tab" onclick="switchFlow(2)">💌 未成約後</div>
+  </div>
+
+  <div id="flowContent"></div>
+</div>
+
+<script>
+// ──────────────────────────────────────────
+// チームデータ
+// ──────────────────────────────────────────
+const TEAMS = [
+  {
+    id: 'chiba-nw',
+    name: '千葉北西チーム',
+    store: '四街道店',
+    icon: '🏋️', color: '#5b4fcf',
+    trainer: '担当者名',
+    tel: '000-0000-0000',
+    address: '〒000-0000 住所を入力',
+    mapUrl: 'https://maps.app.goo.gl/',
+    slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
+    sheets: { cs: '#', team: '#', store: '#' }
+  },
+  {
+    id: 'team-chiba',
+    name: 'チームChiba',
+    store: '佐倉店',
+    icon: '🏋️', color: '#0891b2',
+    trainer: '担当者名',
+    tel: '000-0000-0000',
+    address: '〒000-0000 住所を入力',
+    mapUrl: 'https://maps.app.goo.gl/',
+    slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
+    sheets: { cs: '#', team: '#', store: '#' }
+  },
+  {
+    id: 'rinkai',
+    name: '臨海チーム',
+    store: '根岸店',
+    icon: '🏋️', color: '#059669',
+    trainer: '担当者名',
+    tel: '000-0000-0000',
+    address: '〒000-0000 住所を入力',
+    mapUrl: 'https://maps.app.goo.gl/',
+    slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
+    sheets: { cs: '#', team: '#', store: '#' }
+  },
+  {
+    id: 'hamadai',
+    name: '浜台チーム',
+    store: 'さがみ野店',
+    icon: '🏋️', color: '#d97706',
+    trainer: '担当者名',
+    tel: '000-0000-0000',
+    address: '〒000-0000 住所を入力',
+    mapUrl: 'https://maps.app.goo.gl/',
+    slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
+    sheets: { cs: '#', team: '#', store: '#' }
+  },
+  {
+    id: 'tokyu',
+    name: '東急チーム',
+    store: '日吉',
+    icon: '🏋️', color: '#dc2626',
+    trainer: '担当者名',
+    tel: '000-0000-0000',
+    address: '〒000-0000 住所を入力',
+    mapUrl: 'https://maps.app.goo.gl/',
+    slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
+    sheets: { cs: '#', team: '#', store: '#' }
+  },
+  {
+    id: 'shonan',
+    name: '湘南海道チーム',
+    store: '茅ヶ崎店 / 藤沢本町店 / 保土ヶ谷店',
+    icon: '🏋️', color: '#7c3aed',
+    trainer: '石井拓海',
+    tel: '080-5544-1195',
+    address: '〒253-0056 神奈川県茅ヶ崎市共恵１丁目８−１５ 村田ビル 303',
+    mapUrl: 'https://maps.app.goo.gl/',
+    slots: ['8/5(水) 21:00〜','8/6(木) 14:00〜','8/7(金) 14:00〜','8/10(月) 14:00〜20:00','8/11(火) 19:00〜21:00'],
+    sheets: {
+      cs: 'https://docs.google.com/spreadsheets/d/1ApRd28Fxl5kcvcgxRxG5J7Z7qh4c5cUD6Pvrzhv4HBU/edit?gid=1336394103#gid=1336394103',
+      team: 'https://docs.google.com/spreadsheets/d/1AfzqfXM4YKCrgiXSIzrPjAcXEHSXtKgBV179ZyIVI5Y/edit?gid=1000584110#gid=1000584110',
+      store: 'https://docs.google.com/spreadsheets/d/1-Vtp5tuZSR6RduTayXJHz2OxamVZ2dEVDmUtv5jEFWo/edit?gid=401513502#gid=401513502'
+    }
+  }
+];
+
+// ──────────────────────────────────────────
+// 状態
+// ──────────────────────────────────────────
+let currentTeam = null;
+let currentFlow = 0;
+
+// ──────────────────────────────────────────
+// テンプレート生成
+// ──────────────────────────────────────────
+function buildTemplates(team) {
+  const t = team.trainer;
+  const tel = team.tel;
+  const addr = team.address;
+  const map = team.mapUrl;
+  const gym = `PERSONALGYM ReViNa(レビナ)${team.store}`;
+
+  return {
+    inquiry: {
+      m1: `{名前}さま\nはじめまして。\n\nPERSONALGYM ReViNaの${t}と申します。\n\nこの度はお問い合わせ頂き、誠にありがとうございます。\n\nまた早速ですが無料体験&カウンセリングの日時について\n\n{候補①}\n{候補②}\n{候補③}\n{候補④}\n{候補⑤}\n\n上記日程でご都合いかがでしょうか？\n\n※所要時間60〜75分ほど\n\nその他でご希望の時間がございましたら、３つほどいただけるとスムーズにご予約できます。\n\nご返信お待ちしております🙇‍♂️\n\nPERSONALGYM ReViNa\n${t}`,
+
+      m_adj: `{名前}さま\n\nご返信ありがとうございます！\n\nご都合が合わず申し訳ございません。\n改めて以下の日程はいかがでしょうか？\n\n{候補①}\n{候補②}\n{候補③}\n{候補④}\n{候補⑤}\n\n※所要時間60〜75分ほど\n\nご返信お待ちしております🙇‍♂️\n\nPERSONALGYM ReViNa\n${t}`,
+
+      m3: `ご返信ありがとうございます！\n\n当日の詳細をお送りいたしますのでご確認ください。\n\n【日時】\n{日時}\n※完全予約制ですので、\nお時間丁度を目安にお越しください。\n\n\n【持ち物】\n・トレーニングウェア（更衣室あり）\n・タオル\n・シューズ（任意）\n※ウォーターサーバーがございます。\n\n【経路案内】\n${gym}\n\n${addr}\n${map}\n\n【駐車場】\nレビナ専用の駐車場はございません。\nお近くのコインパーキングにお止めください。\n料金に関しては、レシートをLINEに送っていただけますとご指定の口座にお振込いたします！\n\n【担当者】\n${t}\n\n経路など当日のご連絡がございましたら、以下におかけください。\n${tel}\n\nご不明点がございましたらお気軽にお聞きくださいませ。\n\n当日はよろしくお願いいたします。`,
+
+      m5: `{名前}様\n\nお世話になっております。\nPERSONALGYM ReViNaの${t}です。\n\nご予約いただいた無料カウンセリング/体験カウンセリングの前日となりましたのでお知らせ致します！\n\n【日時】\n{日時}\n※完全予約制ですので、\nお時間丁度を目安にお越しください。\n\n【持ち物】\n・トレーニングウェア（更衣室あり）\n・タオル\n・シューズ（任意）\n※ウォーターサーバーがございます。\n\n【経路案内】\n${gym}\n\n${addr}\n${map}\n\n【駐車場】\nレビナ専用の駐車場はございません。\nお近くのコインパーキングにお止めください。\n料金に関しては、レシートをLINEに送っていただけますとご指定の口座にお振込いたします！\n\n【担当者】\n${t}\n\n経路など当日のご連絡がございましたら、以下におかけください。\n${tel}\n\nご不明点がございましたらお気軽にお聞きくださいませ。\n\n当日はよろしくお願いいたします。`,
+    },
+    contract: {
+      s1: `本日はお忙しい中ご来店いただきありがとうございました😊\nこれから{名前}様の理想の身体に向けて全力でサポートさせて頂きますので、よろしくお願いいたします！\n\n以下、初回日のご案内となりますのでお手隙の際にご確認をお願いいたします。`,
+
+      s2a: `【報告】\n\n【依頼】\n本日成約の{名前}さんにラインにて自己紹介挨拶と予約調整お願いします！\n\n【共有】\n仮予約 2枠は下記日程になります！\n問題なければ挨拶のみお願いいたします！\n\n{日時}`,
+
+      s2b: `【依頼 2】\n本日成約の{名前}さんの引き継ぎを行えればと思います！\n所要時間は15分ほどで、下記日程はいかがでしょうか！\n難しい場合は5つほど可能なお時間を共有いただけますと嬉しいです！\n※なるべく時間枠多めの日を送っていただると！`,
+
+      s3: `【報告】\n{名前}成約です！\n\n【共有】\n引き継ぎ完了次第報告します！`,
+    },
+    nocontract: {
+      u1: `{名前}様\n\n本日はお忙しい中、カウンセリングにお越し頂きありがとうございました😊\n\n当店をお選び頂きました際には、ご期待を上回るサポートと結果をお約束いたします！\n\nご検討の上ご返答をお待ちしております😌\n\nPERSONALGYM ReViNa ${t}`,
+
+      u3: `【報告】\n\n【共有】\nシート記入完了`,
+    }
+  };
+}
+
+// ──────────────────────────────────────────
+// 変数置換
+// ──────────────────────────────────────────
+function getVals(team) {
+  const slotDefaults = team ? team.slots : [];
+  return {
+    '{名前}':   document.getElementById('customerName').value.trim() || '〇〇',
+    '{日時}':   document.getElementById('appointmentDate').value.trim() || '〇/〇（曜）〇〇:00〜',
+    '{候補①}': document.getElementById('slot1').value.trim() || slotDefaults[0] || '候補①',
+    '{候補②}': document.getElementById('slot2').value.trim() || slotDefaults[1] || '候補②',
+    '{候補③}': document.getElementById('slot3').value.trim() || slotDefaults[2] || '候補③',
+    '{候補④}': document.getElementById('slot4').value.trim() || slotDefaults[3] || '候補④',
+    '{候補⑤}': document.getElementById('slot5').value.trim() || slotDefaults[4] || '候補⑤',
+  };
+}
+
+function sub(tmpl, team) {
+  const v = getVals(team);
+  return tmpl.replace(/\{[^}]+\}/g, k => v[k] ?? k);
+}
+
+function renderBubble(el, tmpl, team) {
+  const escaped = sub(tmpl, team)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  el.innerHTML = escaped.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+}
+
+// ──────────────────────────────────────────
+// ホーム
+// ──────────────────────────────────────────
+function buildHome() {
+  const list = document.getElementById('teamList');
+  list.innerHTML = TEAMS.map(t => `
+    <div class="team-item" onclick="selectTeam('${t.id}')">
+      <div class="team-icon" style="background:${t.color}22">${t.icon}</div>
+      <div class="team-info">
+        <div class="team-name">${t.name}</div>
+        <div class="team-store">${t.store}</div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+  `).join('');
+}
+
+// ──────────────────────────────────────────
+// チーム選択
+// ──────────────────────────────────────────
+function selectTeam(id) {
+  currentTeam = TEAMS.find(t => t.id === id);
+  currentFlow = 0;
+
+  document.getElementById('flowTeamName').textContent = currentTeam.name;
+  document.getElementById('flowStoreName').textContent = currentTeam.store;
+
+  // スロットのデフォルト値をセット
+  currentTeam.slots.forEach((s, i) => {
+    const el = document.getElementById(`slot${i+1}`);
+    if (el && !el.value) el.placeholder = s;
+  });
+
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-flow').classList.add('active');
+  document.getElementById('backBtn').style.display = 'flex';
+  document.querySelectorAll('.flow-tab').forEach((t,i) => t.classList.toggle('active', i === 0));
+  window.scrollTo(0, 0);
+  renderFlow();
+}
+
+// ──────────────────────────────────────────
+// フロー切替
+// ──────────────────────────────────────────
+function switchFlow(i) {
+  currentFlow = i;
+  document.querySelectorAll('.flow-tab').forEach((t,j) => t.classList.toggle('active', i === j));
+  renderFlow();
+}
+
+// ──────────────────────────────────────────
+// フロー描画
+// ──────────────────────────────────────────
+function renderFlow() {
+  const team = currentTeam;
+  const tmpls = buildTemplates(team);
+  const cs = team.sheets.cs;
+  const tm = team.sheets.team;
+  const st = team.sheets.store;
+  const content = document.getElementById('flowContent');
+
+  if (currentFlow === 0) {
+    content.innerHTML = `
+      <div class="steps-wrap">
+        <div class="divider-label">STEP 1 — 初回返信</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge">1</div><div class="step-info"><div class="step-title">初回返信メッセージ</div><div class="step-desc">お問い合わせへの第一返信</div></div></div>
+          <div class="msg-wrap"><div class="msg-bubble" id="m1"></div><button class="copy-btn" onclick="copyMsg('m1')">📋 コピーする</button></div>
+        </div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge sky">↩</div><div class="step-info"><div class="step-title">日程調整メッセージ</div><div class="step-desc">候補日が合わない場合の再提案</div></div></div>
+          <div class="msg-wrap"><div class="msg-bubble" id="m_adj"></div><button class="copy-btn" onclick="copyMsg('m_adj')">📋 コピーする</button></div>
+        </div>
+
+        <div class="divider-label">STEP 2 — シート記入・報告</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge indigo">2</div><div class="step-info"><div class="step-title">シート記入・グループ報告</div><div class="step-desc">各シートに記入してグループに報告</div></div></div>
+          <div class="action-wrap">
+            <div class="action-item"><input type="checkbox"><span class="action-label">カウンセリングシート記入</span><a class="open-link" href="${cs}" target="_blank">開く</a></div>
+            <div class="action-item"><input type="checkbox"><span class="action-label">チームシート記入</span><a class="open-link" href="${tm}" target="_blank">開く</a></div>
+            <div class="action-item"><input type="checkbox"><span class="action-label">グループ報告</span></div>
+          </div>
+        </div>
+
+        <div class="divider-label">STEP 3 — 日程確定</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge">3</div><div class="step-info"><div class="step-title">日程確定メッセージ</div><div class="step-desc">当日詳細の送付</div></div></div>
+          <div class="msg-wrap"><div class="msg-bubble" id="m3"></div><button class="copy-btn" onclick="copyMsg('m3')">📋 コピーする</button></div>
+        </div>
+
+        <div class="divider-label">STEP 4 — 記入・カレンダー</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge indigo">4</div><div class="step-info"><div class="step-title">シート記入・報告・カレンダー</div><div class="step-desc">全シートへの記入とカレンダー登録</div></div></div>
+          <div class="action-wrap">
+            <div class="action-item"><input type="checkbox"><span class="action-label">カウンセリングシート記入</span><a class="open-link" href="${cs}" target="_blank">開く</a></div>
+            <div class="action-item"><input type="checkbox"><span class="action-label">チームシート記入</span><a class="open-link" href="${tm}" target="_blank">開く</a></div>
+            <div class="action-item"><input type="checkbox"><span class="action-label">グループ報告</span></div>
+            <div class="action-item"><input type="checkbox"><span class="action-label">カレンダー記入</span></div>
+          </div>
+        </div>
+
+        <div class="divider-label">STEP 5 — 前日リマインド</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge">5</div><div class="step-info"><div class="step-title">前日リマインド</div><div class="step-desc">カウンセリング前日に送信</div></div></div>
+          <div class="msg-wrap"><div class="msg-bubble" id="m5"></div><button class="copy-btn" onclick="copyMsg('m5')">📋 コピーする</button></div>
+        </div>
+      </div>`;
+    renderBubble(document.getElementById('m1'),    tmpls.inquiry.m1,    team);
+    renderBubble(document.getElementById('m_adj'), tmpls.inquiry.m_adj, team);
+    renderBubble(document.getElementById('m3'),    tmpls.inquiry.m3,    team);
+    renderBubble(document.getElementById('m5'),    tmpls.inquiry.m5,    team);
+
+  } else if (currentFlow === 1) {
+    content.innerHTML = `
+      <div class="steps-wrap">
+        <div class="divider-label">STEP 1 — お客様へ</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge">1</div><div class="step-info"><div class="step-title">成約後メッセージ</div><div class="step-desc">お客様への感謝・今後の案内</div></div></div>
+          <div class="msg-wrap"><div class="msg-bubble" id="s1"></div><button class="copy-btn" onclick="copyMsg('s1')">📋 コピーする</button></div>
+        </div>
+
+        <div class="divider-label">STEP 2 — グループ報告</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge teal">2</div><div class="step-info"><div class="step-title">グループLINE報告</div><div class="step-desc">チームへの成約報告・依頼</div></div></div>
+          <div class="msg-wrap">
+            <span class="msg-label">報告 ①</span>
+            <div class="msg-bubble" id="s2a"></div>
+            <button class="copy-btn" onclick="copyMsg('s2a')">📋 コピーする</button>
+          </div>
+          <div class="msg-wrap">
+            <span class="msg-label">報告 ②（引き継ぎ依頼）</span>
+            <div class="msg-bubble" id="s2b"></div>
+            <button class="copy-btn" onclick="copyMsg('s2b')">📋 コピーする</button>
+          </div>
+        </div>
+
+        <div class="divider-label">STEP 3 — カウンセリング報告</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge teal">3</div><div class="step-info"><div class="step-title">カウンセリンググループ報告</div><div class="step-desc">専用グループへの成約報告</div></div></div>
+          <div class="msg-wrap"><div class="msg-bubble" id="s3"></div><button class="copy-btn" onclick="copyMsg('s3')">📋 コピーする</button></div>
+        </div>
+
+        <div class="divider-label">STEP 4 — シート記入</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge indigo">4</div><div class="step-info"><div class="step-title">シート記入（1・2・3）</div><div class="step-desc">全シートに成約情報を記入</div></div></div>
+          <div class="action-wrap">
+            <div class="action-item"><input type="checkbox"><span class="action-label">カウンセリングシート記入</span><a class="open-link" href="${cs}" target="_blank">開く</a></div>
+            <div class="action-item"><input type="checkbox"><span class="action-label">チームシート記入</span><a class="open-link" href="${tm}" target="_blank">開く</a></div>
+            <div class="action-item"><input type="checkbox"><span class="action-label">店舗シート記入</span><a class="open-link" href="${st}" target="_blank">開く</a></div>
+          </div>
+        </div>
+      </div>`;
+    renderBubble(document.getElementById('s1'),  tmpls.contract.s1,  team);
+    renderBubble(document.getElementById('s2a'), tmpls.contract.s2a, team);
+    renderBubble(document.getElementById('s2b'), tmpls.contract.s2b, team);
+    renderBubble(document.getElementById('s3'),  tmpls.contract.s3,  team);
+
+  } else {
+    content.innerHTML = `
+      <div class="steps-wrap">
+        <div class="divider-label">STEP 1 — フォローメッセージ</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge">1</div><div class="step-info"><div class="step-title">未成約フォローメッセージ</div><div class="step-desc">検討中のお客様へのフォロー</div></div></div>
+          <div class="msg-wrap"><div class="msg-bubble" id="u1"></div><button class="copy-btn" onclick="copyMsg('u1')">📋 コピーする</button></div>
+        </div>
+
+        <div class="divider-label">STEP 2 — シート記入</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge indigo">2</div><div class="step-info"><div class="step-title">シート記入（1・2・3）</div><div class="step-desc">全シートに情報を記入</div></div></div>
+          <div class="action-wrap">
+            <div class="action-item"><input type="checkbox"><span class="action-label">カウンセリングシート記入</span><a class="open-link" href="${cs}" target="_blank">開く</a></div>
+            <div class="action-item"><input type="checkbox"><span class="action-label">チームシート記入</span><a class="open-link" href="${tm}" target="_blank">開く</a></div>
+            <div class="action-item"><input type="checkbox"><span class="action-label">店舗シート記入</span><a class="open-link" href="${st}" target="_blank">開く</a></div>
+          </div>
+        </div>
+
+        <div class="divider-label">STEP 3 — グループ報告</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge teal">3</div><div class="step-info"><div class="step-title">グループ報告</div><div class="step-desc">シート記入完了の報告</div></div></div>
+          <div class="msg-wrap"><div class="msg-bubble" id="u3"></div><button class="copy-btn" onclick="copyMsg('u3')">📋 コピーする</button></div>
+        </div>
+      </div>`;
+    renderBubble(document.getElementById('u1'), tmpls.nocontract.u1, team);
+    renderBubble(document.getElementById('u3'), tmpls.nocontract.u3, team);
+  }
+}
+
+// ──────────────────────────────────────────
+// 全メッセージ再描画
+// ──────────────────────────────────────────
+function renderAll() {
+  if (!currentTeam) return;
+  const team = currentTeam;
+  const tmpls = buildTemplates(team);
+  const ids = {
+    m1: tmpls.inquiry.m1, m_adj: tmpls.inquiry.m_adj,
+    m3: tmpls.inquiry.m3, m5: tmpls.inquiry.m5,
+    s1: tmpls.contract.s1, s2a: tmpls.contract.s2a,
+    s2b: tmpls.contract.s2b, s3: tmpls.contract.s3,
+    u1: tmpls.nocontract.u1, u3: tmpls.nocontract.u3,
+  };
+  Object.entries(ids).forEach(([id, tmpl]) => {
+    const el = document.getElementById(id);
+    if (el) renderBubble(el, tmpl, team);
+  });
+}
+
+// ──────────────────────────────────────────
+// コピー
+// ──────────────────────────────────────────
+function copyMsg(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const text = el.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = el.nextElementSibling;
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✅ コピーしました！';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ──────────────────────────────────────────
+// ナビ
+// ──────────────────────────────────────────
+function goBack() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-home').classList.add('active');
+  document.getElementById('backBtn').style.display = 'none';
+  document.getElementById('customerName').value = '';
+  document.getElementById('appointmentDate').value = '';
+  ['slot1','slot2','slot3','slot4','slot5'].forEach(id => { document.getElementById(id).value = ''; });
+  window.scrollTo(0, 0);
+}
+
+function toggleSlots() {
+  document.getElementById('slotsPanel').classList.toggle('open');
+  document.getElementById('slotsArrow').classList.toggle('open');
+}
+
+// ──────────────────────────────────────────
+// 初期化
+// ──────────────────────────────────────────
+buildHome();
+</script>
+</body>
+</html>
