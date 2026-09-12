@@ -491,7 +491,7 @@ const TEAMS = [
     tel: '080-5544-1195',
     slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
     sheets: {
-      cs: '#',
+      cs: 'https://docs.google.com/spreadsheets/d/1ApRd28Fxl5kcvcgxRxG5J7Z7qh4c5cUD6Pvrzhv4HBU/edit?gid=1733049072#gid=1733049072',
       team: 'https://web-production-cace.up.railway.app/inquiries?biz=gym',
       store: 'https://web-production-cace.up.railway.app/inquiries?biz=gym'
     },
@@ -507,7 +507,7 @@ const TEAMS = [
     tel: '080-5544-1195',
     slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
     sheets: {
-      cs: '#',
+      cs: 'https://docs.google.com/spreadsheets/d/1ApRd28Fxl5kcvcgxRxG5J7Z7qh4c5cUD6Pvrzhv4HBU/edit?gid=1733049072#gid=1733049072',
       team: 'https://web-production-cace.up.railway.app/inquiries?biz=gym',
       store: 'https://web-production-cace.up.railway.app/inquiries?biz=gym'
     },
@@ -559,7 +559,7 @@ const TEAMS = [
     tel: '080-5544-1195',
     slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
     sheets: {
-      cs: '#',
+      cs: 'https://docs.google.com/spreadsheets/d/1ApRd28Fxl5kcvcgxRxG5J7Z7qh4c5cUD6Pvrzhv4HBU/edit?gid=1733049072#gid=1733049072',
       team: 'https://web-production-cace.up.railway.app/inquiries?biz=gym',
       store: 'https://web-production-cace.up.railway.app/inquiries?biz=gym'
     },
@@ -575,7 +575,7 @@ const TEAMS = [
     tel: '080-5544-1195',
     slots: ['8/5(水) 21:00〜','8/6(木) 14:00〜','8/7(金) 14:00〜','8/10(月) 14:00〜20:00','8/11(火) 19:00〜21:00'],
     sheets: {
-      cs: 'https://docs.google.com/spreadsheets/d/1ApRd28Fxl5kcvcgxRxG5J7Z7qh4c5cUD6Pvrzhv4HBU/edit?gid=1336394103#gid=1336394103',
+      cs: 'https://docs.google.com/spreadsheets/d/1ApRd28Fxl5kcvcgxRxG5J7Z7qh4c5cUD6Pvrzhv4HBU/edit?gid=1733049072#gid=1733049072',
       team: 'https://web-production-cace.up.railway.app/inquiries?biz=gym',
       store: 'https://web-production-cace.up.railway.app/inquiries?biz=gym'
     },
@@ -690,9 +690,9 @@ function buildTemplates(team) {
       m5: `{名前}様\n\nお世話になっております。\nPERSONALGYM ReViNaの${t}です。\n\nご予約いただいた無料カウンセリング/体験カウンセリングの前日となりましたのでお知らせ致します！\n\n【日時】\n{日時}\n※完全予約制ですので、\nお時間丁度を目安にお越しください。\n\n【持ち物】\n・トレーニングウェア（更衣室あり）\n・タオル\n・シューズ（任意）\n※ウォーターサーバーがございます。\n\n【経路案内】\n${gym}\n\n${addr}\n${map}\n\n【駐車場】\nレビナ専用の駐車場はございません。\nお近くのコインパーキングにお止めください。\n料金に関しては、レシートをLINEに送っていただけますとご指定の口座にお振込いたします！\n\n【担当者】\n${t}\n\n経路など当日のご連絡がございましたら、以下におかけください。\n${tel}\n\nご不明点がございましたらお気軽にお聞きくださいませ。\n\n当日はよろしくお願いいたします。`,
     },
     contract: {
-      s1: `本日はお忙しい中ご来店いただきありがとうございました😊\nこれから{名前}様の理想の身体に向けて全力でサポートさせて頂きますので、よろしくお願いいたします！\n\n以下、初回日のご案内となりますのでお手隙の際にご確認をお願いいたします。`,
+      s1: `本日はお忙しい中ご来店いただきありがとうございました😊\nこれから{名前}様の理想の身体に向けて全力でサポートさせて頂きますので、よろしくお願いいたします！`,
       s2a: `【報告】\n\n【依頼】\n本日成約の{名前}さんにラインにて自己紹介挨拶と予約調整お願いします！\n\n【共有】\n仮予約 2枠は下記日程になります！\n問題なければ挨拶のみお願いいたします！\n\n{日時}`,
-      s2b: `【依頼 2】\n本日成約の{名前}さんの引き継ぎを行えればと思います！\n所要時間は15分ほどで、下記日程はいかがでしょうか！\n難しい場合は5つほど可能なお時間を共有いただけますと嬉しいです！\n※なるべく時間枠多めの日を送っていただると！`,
+      s2b: `【依頼 2】\n本日成約の{名前}さんの引き継ぎを行えればと思います！\n\n所要時間は15分ほどで、5日ほど可能なお時間を共有いただけますと嬉しいです！\n\n※なるべく時間枠多めの日を送っていただると！`,
       s3: `【報告】\n{名前}成約です！\n\n【共有】\n引き継ぎ完了次第報告します！`,
     },
     nocontract: {
@@ -820,7 +820,6 @@ function renderFlow() {
           <div class="action-wrap">
             <div class="action-item"><input type="checkbox"><span class="action-label">カウンセリングシート記入</span><a class="open-link" href="${cs}" target="_blank">開く</a></div>
             <div class="action-item"><input type="checkbox"><span class="action-label">チーム・店舗管理ツール</span><a class="open-link" href="${tm}" target="_blank">開く</a></div>
-            <div class="action-item"><input type="checkbox"><span class="action-label">チーム・店舗管理ツール</span><a class="open-link" href="${st}" target="_blank">開く</a></div>
           </div>
         </div>
       </div>`;
@@ -843,7 +842,6 @@ function renderFlow() {
           <div class="action-wrap">
             <div class="action-item"><input type="checkbox"><span class="action-label">カウンセリングシート記入</span><a class="open-link" href="${cs}" target="_blank">開く</a></div>
             <div class="action-item"><input type="checkbox"><span class="action-label">チーム・店舗管理ツール</span><a class="open-link" href="${tm}" target="_blank">開く</a></div>
-            <div class="action-item"><input type="checkbox"><span class="action-label">チーム・店舗管理ツール</span><a class="open-link" href="${st}" target="_blank">開く</a></div>
           </div>
         </div>
         <div class="divider-label">STEP 3 — グループ報告</div>
