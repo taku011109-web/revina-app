@@ -6,112 +6,351 @@
   <title>ReViNa 対応ツール</title>
   <style>
     :root {
-      --purple: #5b4fcf;
-      --purple-dark: #4338ca;
-      --green: #16a34a;
-      --teal: #0891b2;
-      --text: #1a1a2e;
-      --sub: #64748b;
-      --bg: #f4f4f8;
+      --p1: #1e0b4b;
+      --p2: #6d28d9;
+      --p3: #8b5cf6;
+      --p4: #ede9fe;
+      --green: #10b981;
+      --blue: #3b82f6;
+      --sky: #0ea5e9;
+      --text: #111827;
+      --sub: #6b7280;
+      --bg: #f5f4fb;
       --white: #ffffff;
-      --border: #e5e7eb;
-      --shadow: 0 1px 6px rgba(0,0,0,0.08);
+      --border: #e5e3f0;
+      --card-shadow: 0 2px 16px rgba(109,40,217,0.10);
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
     }
 
-    /* HEADER */
+    /* ── HEADER ── */
     .header {
-      background: var(--purple);
-      height: 54px;
+      background: linear-gradient(160deg, var(--p1) 0%, var(--p2) 100%);
+      height: 56px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 20px;
+      padding: 0 18px;
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 200;
+      box-shadow: 0 4px 24px rgba(30,11,75,0.40);
     }
-    .header-left { display: flex; align-items: center; gap: 12px; }
-    .logo { color: white; font-size: 20px; font-weight: 800; }
+    .header-left { display: flex; align-items: center; gap: 10px; }
+    .logo {
+      color: #fff;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .logo-dot { color: #c4b5fd; }
     .back-btn {
-      color: rgba(255,255,255,0.9);
-      font-size: 13px; font-weight: 600;
-      cursor: pointer; display: none;
-      align-items: center; gap: 4px;
+      display: none;
+      align-items: center;
+      gap: 4px;
+      color: #c4b5fd;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 6px 12px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
     }
     .logout-btn {
-      color: rgba(255,255,255,0.85);
-      font-size: 13px; font-weight: 600;
+      color: rgba(255,255,255,0.75);
+      font-size: 12px;
+      font-weight: 600;
       text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid rgba(255,255,255,0.20);
+      border-radius: 20px;
     }
 
-    /* SCREENS */
-    .screen { display: none; padding-bottom: 40px; }
+    /* ── SCREENS ── */
+    .screen { display: none; padding-bottom: 56px; }
     .screen.active { display: block; }
 
-    /* HOME */
-    .section-card {
-      margin: 20px 16px 0;
-      background: var(--white);
-      border-radius: 16px;
+    /* ── MAIN MENU ── */
+    .main-hero {
+      background: linear-gradient(160deg, var(--p1) 0%, var(--p2) 100%);
+      padding: 32px 20px 56px;
+      position: relative;
       overflow: hidden;
-      box-shadow: var(--shadow);
     }
-    .section-title {
-      font-size: 14px; font-weight: 700;
-      color: var(--text);
-      padding: 18px 18px 12px;
+    .main-hero::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      background: rgba(139,92,246,0.25);
+      border-radius: 50%;
     }
-    .team-item {
+    .main-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -20px; left: -20px;
+      width: 120px; height: 120px;
+      background: rgba(196,181,253,0.15);
+      border-radius: 50%;
+    }
+    .main-hero-label {
+      font-size: 10px; font-weight: 800; letter-spacing: 2px;
+      color: #c4b5fd; text-transform: uppercase; margin-bottom: 6px;
+    }
+    .main-hero-title {
+      font-size: 28px; font-weight: 900; color: #fff;
+      letter-spacing: -0.5px; line-height: 1.2;
+    }
+    .main-hero-sub {
+      font-size: 13px; color: rgba(255,255,255,0.6);
+      margin-top: 6px; font-weight: 500;
+    }
+    .menu-wrap {
+      margin: -26px 14px 0;
+      position: relative; z-index: 10;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .menu-card {
+      background: var(--white);
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
       display: flex;
       align-items: center;
-      padding: 15px 18px;
-      border-top: 1px solid var(--border);
+      padding: 20px 18px;
+      gap: 16px;
       cursor: pointer;
-      gap: 14px;
-      transition: background 0.15s;
+      transition: transform 0.15s, box-shadow 0.15s;
+      border: 1px solid rgba(109,40,217,0.06);
+      position: relative;
+      overflow: hidden;
     }
-    .team-item:active { background: #f8f8fc; }
-    .team-icon {
-      width: 44px; height: 44px;
-      border-radius: 12px;
+    .menu-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: var(--mc, var(--p2));
+      border-radius: 4px 0 0 4px;
+    }
+    .menu-card:active { transform: scale(0.98); box-shadow: 0 1px 8px rgba(109,40,217,0.08); }
+    .menu-icon {
+      width: 56px; height: 56px; border-radius: 18px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 20px; flex-shrink: 0;
+      font-size: 26px; flex-shrink: 0;
+      background: var(--mi, #f3f0ff);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
     }
-    .team-info { flex: 1; }
-    .team-name { font-size: 15px; font-weight: 700; color: var(--text); }
-    .team-store { font-size: 12px; color: var(--sub); margin-top: 2px; }
-    .arrow { color: #c4c4d0; font-size: 18px; }
-
-    /* FLOW SELECT */
-    .flow-header {
-      padding: 20px 16px 0;
-    }
-    .flow-team-name {
-      font-size: 20px; font-weight: 800; color: var(--text);
-    }
-    .flow-store-name {
-      font-size: 13px; color: var(--sub); margin-top: 4px;
+    .menu-info { flex: 1; min-width: 0; }
+    .menu-title { font-size: 17px; font-weight: 900; color: var(--text); }
+    .menu-desc { font-size: 12px; color: var(--sub); margin-top: 3px; font-weight: 500; }
+    .menu-arrow {
+      width: 30px; height: 30px; background: var(--p4);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      color: var(--p2); font-size: 16px; font-weight: 900; flex-shrink: 0;
     }
 
-    /* INPUT CARD */
-    .input-card {
-      margin: 16px 16px 0;
-      background: var(--white);
+    /* ── HOME HERO ── */
+    .home-hero {
+      background: linear-gradient(160deg, var(--p1) 0%, var(--p2) 100%);
+      padding: 28px 20px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+    .home-hero::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      background: rgba(139,92,246,0.25);
+      border-radius: 50%;
+    }
+    .home-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -20px; left: -20px;
+      width: 120px; height: 120px;
+      background: rgba(196,181,253,0.15);
+      border-radius: 50%;
+    }
+    .hero-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #c4b5fd;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .hero-title {
+      font-size: 26px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+    .hero-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* ── SEARCH ── */
+    .search-wrap {
+      margin: -20px 14px 8px;
+      position: relative;
+      z-index: 15;
+    }
+    .search-wrap input {
+      width: 100%;
+      border: 1.5px solid var(--border);
       border-radius: 16px;
-      padding: 16px;
-      box-shadow: var(--shadow);
+      padding: 13px 18px;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      background: white;
+      box-shadow: var(--card-shadow);
+      transition: all 0.2s;
+    }
+    .search-wrap input:focus {
+      border-color: var(--p3);
+      box-shadow: 0 0 0 4px rgba(139,92,246,0.10);
+    }
+    .no-results {
+      text-align: center;
+      padding: 32px;
+      color: var(--sub);
+      font-size: 13px;
+    }
+
+    /* ── STORE CARDS ── */
+    .teams-wrap {
+      margin: 0 14px 0;
+      position: relative;
+      z-index: 10;
+    }
+    .team-card {
+      background: var(--white);
+      border-radius: 20px;
+      margin-bottom: 12px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      align-items: center;
+      padding: 18px 16px;
+      gap: 16px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      border: 1px solid rgba(109,40,217,0.06);
+      overflow: hidden;
+      position: relative;
+    }
+    .team-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: var(--accent-color, var(--p2));
+      border-radius: 4px 0 0 4px;
+    }
+    .team-card:active { transform: scale(0.98); box-shadow: 0 1px 8px rgba(109,40,217,0.08); }
+    .team-icon-wrap {
+      width: 52px; height: 52px;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+      background: var(--icon-bg, #f3f0ff);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+    .team-info { flex: 1; min-width: 0; }
+    .team-name { font-size: 16px; font-weight: 800; color: var(--text); }
+    .team-stores {
+      font-size: 11px;
+      color: var(--sub);
+      margin-top: 3px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .team-arrow {
+      width: 28px; height: 28px;
+      background: var(--p4);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--p2);
+      font-size: 14px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    /* ── FLOW BANNER ── */
+    .flow-banner {
+      background: linear-gradient(160deg, var(--p1) 0%, var(--p2) 100%);
+      padding: 22px 18px 36px;
+      position: relative;
+      overflow: hidden;
+    }
+    .flow-banner::after {
+      content: '';
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 140px; height: 140px;
+      background: rgba(196,181,253,0.15);
+      border-radius: 50%;
+    }
+    .banner-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #c4b5fd;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .banner-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.3px;
+    }
+    .banner-store {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 8px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(4px);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #e9d5ff;
+    }
+
+    /* ── INPUT CARD ── */
+    .input-card {
+      margin: -18px 14px 0;
+      background: var(--white);
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      z-index: 10;
+      border: 1px solid rgba(109,40,217,0.06);
     }
     .input-card-title {
-      font-size: 11px; font-weight: 700; color: var(--sub);
-      text-transform: uppercase; letter-spacing: 0.5px;
-      margin-bottom: 12px;
+      font-size: 10px; font-weight: 800; color: var(--p3);
+      text-transform: uppercase; letter-spacing: 1.2px;
+      margin-bottom: 14px;
     }
     .input-row {
       display: flex; align-items: center; gap: 10px;
@@ -119,123 +358,164 @@
     }
     .input-row:last-of-type { margin-bottom: 0; }
     .input-row label {
-      font-size: 13px; color: var(--sub); font-weight: 600;
-      white-space: nowrap; min-width: 56px;
+      font-size: 12px; color: var(--sub); font-weight: 700;
+      white-space: nowrap; min-width: 58px;
     }
     .input-row input {
       flex: 1;
       border: 1.5px solid var(--border);
-      border-radius: 10px;
-      padding: 8px 12px;
+      border-radius: 12px;
+      padding: 10px 14px;
       font-size: 14px; color: var(--text);
-      outline: none; background: #fafafa;
+      outline: none; background: #faf8ff;
+      transition: all 0.2s;
     }
-    .input-row input:focus { border-color: var(--purple); background: white; }
+    .input-row input:focus {
+      border-color: var(--p3);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(139,92,246,0.10);
+    }
     .slots-toggle {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 0 0;
+      padding: 12px 0 0;
       border-top: 1px solid var(--border);
-      margin-top: 10px;
+      margin-top: 12px;
       cursor: pointer;
     }
-    .slots-toggle span { font-size: 13px; color: var(--purple); font-weight: 600; }
-    .slots-arrow { font-size: 11px; color: var(--purple); transition: transform 0.2s; }
+    .slots-toggle span { font-size: 12px; color: var(--p2); font-weight: 700; }
+    .slots-arrow { font-size: 10px; color: var(--p3); transition: transform 0.2s; }
     .slots-arrow.open { transform: rotate(180deg); }
     .slots-panel { display: none; margin-top: 12px; flex-direction: column; gap: 8px; }
     .slots-panel.open { display: flex; }
     .slot-row { display: flex; align-items: center; gap: 10px; }
-    .slot-row label { font-size: 12px; color: var(--sub); font-weight: 600; white-space: nowrap; min-width: 36px; }
+    .slot-row label { font-size: 11px; color: var(--sub); font-weight: 700; white-space: nowrap; min-width: 36px; }
     .slot-row input {
-      flex: 1; border: 1.5px solid var(--border); border-radius: 8px;
-      padding: 6px 10px; font-size: 13px; color: var(--text);
-      outline: none; background: #fafafa;
+      flex: 1; border: 1.5px solid var(--border); border-radius: 10px;
+      padding: 7px 12px; font-size: 13px; color: var(--text);
+      outline: none; background: #faf8ff;
     }
 
-    /* FLOW TABS */
+    /* ── FLOW TABS ── */
     .flow-tabs {
       display: flex;
-      margin: 16px 16px 0;
+      margin: 16px 14px 0;
       background: var(--white);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
+      border-radius: 16px;
+      box-shadow: var(--card-shadow);
+      padding: 5px;
+      gap: 4px;
+      border: 1px solid rgba(109,40,217,0.06);
     }
     .flow-tab {
-      flex: 1; padding: 12px 4px;
-      font-size: 12px; font-weight: 700;
+      flex: 1;
+      padding: 10px 6px;
+      font-size: 11px; font-weight: 800;
       text-align: center; color: var(--sub);
-      cursor: pointer; border-bottom: 3px solid transparent;
-      transition: all 0.2s;
+      cursor: pointer;
+      border-radius: 11px;
+      transition: all 0.22s;
+      line-height: 1.3;
     }
-    .flow-tab.active { color: var(--purple); border-bottom-color: var(--purple); }
+    .flow-tab.active {
+      background: linear-gradient(135deg, var(--p2), var(--p1));
+      color: white;
+      box-shadow: 0 3px 12px rgba(109,40,217,0.40);
+    }
 
-    /* STEPS */
-    .steps-wrap { padding: 16px; }
+    /* ── STEPS ── */
+    .steps-wrap { padding: 16px 14px; }
     .divider-label {
-      font-size: 11px; font-weight: 700; color: var(--sub);
-      letter-spacing: 0.8px; text-transform: uppercase;
-      margin: 20px 0 8px 2px;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 10px; font-weight: 800; color: var(--sub);
+      letter-spacing: 1.2px; text-transform: uppercase;
+      margin: 24px 0 10px 2px;
     }
     .divider-label:first-child { margin-top: 0; }
+    .divider-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
     .step-card {
-      background: var(--white); border-radius: 16px;
-      margin-bottom: 10px; box-shadow: var(--shadow); overflow: hidden;
+      background: var(--white);
+      border-radius: 20px;
+      margin-bottom: 10px;
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      border: 1px solid rgba(109,40,217,0.06);
     }
     .step-head {
-      display: flex; align-items: center; gap: 12px;
-      padding: 14px 16px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
     }
     .step-badge {
-      width: 32px; height: 32px; border-radius: 10px;
-      background: var(--purple); color: white;
-      font-size: 13px; font-weight: 800;
+      width: 36px; height: 36px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--p2), var(--p1));
+      color: white;
+      font-size: 14px; font-weight: 900;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(109,40,217,0.35);
     }
-    .step-badge.teal { background: var(--teal); }
-    .step-badge.sky  { background: #0ea5e9; }
-    .step-badge.indigo { background: #4f46e5; }
+    .step-badge.teal { background: linear-gradient(135deg, #0ea5e9, #0369a1); box-shadow: 0 3px 10px rgba(14,165,233,0.35); }
+    .step-badge.sky  { background: linear-gradient(135deg, #38bdf8, #0284c7); box-shadow: 0 3px 10px rgba(56,189,248,0.35); }
+    .step-badge.indigo { background: linear-gradient(135deg, #6366f1, #4338ca); box-shadow: 0 3px 10px rgba(99,102,241,0.35); }
     .step-info { flex: 1; }
-    .step-title { font-size: 14px; font-weight: 700; color: var(--text); }
-    .step-desc { font-size: 11px; color: var(--sub); margin-top: 2px; }
+    .step-title { font-size: 14px; font-weight: 800; color: var(--text); }
+    .step-desc { font-size: 11px; color: var(--sub); margin-top: 2px; font-weight: 500; }
 
-    /* MESSAGE */
-    .msg-wrap { padding: 14px 16px; }
+    /* ── MESSAGE ── */
+    .msg-wrap { padding: 16px 18px; }
     .msg-label {
-      display: inline-block; font-size: 10px; font-weight: 700;
-      color: var(--purple); background: #f0eeff;
-      border-radius: 6px; padding: 3px 10px; margin-bottom: 10px;
+      display: inline-flex; align-items: center;
+      font-size: 10px; font-weight: 800;
+      color: var(--p2);
+      background: var(--p4);
+      border-radius: 8px; padding: 4px 12px; margin-bottom: 12px;
+      letter-spacing: 0.5px;
     }
     .msg-bubble {
-      background: #f8f8fc; border: 1.5px solid #e5e3f5;
-      border-radius: 12px; padding: 14px 16px;
-      font-size: 13px; line-height: 1.8;
+      background: #faf8ff;
+      border: 1.5px solid #ede9fe;
+      border-radius: 16px; padding: 16px 18px;
+      font-size: 13px; line-height: 2.0;
       color: var(--text); white-space: pre-wrap; word-break: break-word;
     }
-    .msg-bubble a { color: #2563eb; }
+    .msg-bubble a { color: var(--blue); text-decoration: none; }
     .copy-btn {
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-      width: 100%; background: var(--purple); color: white;
-      border: none; border-radius: 12px; padding: 13px;
-      font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 12px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      background: linear-gradient(135deg, var(--p2) 0%, var(--p1) 100%);
+      color: white;
+      border: none; border-radius: 14px; padding: 15px;
+      font-size: 14px; font-weight: 800; cursor: pointer; margin-top: 12px;
+      box-shadow: 0 5px 18px rgba(109,40,217,0.38);
+      transition: transform 0.1s, box-shadow 0.1s;
+      letter-spacing: 0.3px;
     }
-    .copy-btn.copied { background: var(--green); }
+    .copy-btn:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(109,40,217,0.25); }
+    .copy-btn.copied {
+      background: linear-gradient(135deg, var(--green), #059669);
+      box-shadow: 0 5px 18px rgba(16,185,129,0.38);
+    }
 
-    /* ACTION */
-    .action-wrap { padding: 4px 16px 14px; }
+    /* ── ACTION ── */
+    .action-wrap { padding: 6px 18px 16px; }
     .action-item {
       display: flex; align-items: center; gap: 12px;
-      padding: 13px 0; border-bottom: 1px solid var(--border);
+      padding: 14px 0; border-bottom: 1px solid var(--border);
     }
     .action-item:last-child { border-bottom: none; }
     .action-item input[type="checkbox"] {
-      width: 22px; height: 22px; accent-color: var(--purple); flex-shrink: 0;
+      width: 22px; height: 22px;
+      accent-color: var(--p2); flex-shrink: 0;
     }
-    .action-label { flex: 1; font-size: 14px; color: var(--text); font-weight: 500; }
+    .action-label { flex: 1; font-size: 14px; color: var(--text); font-weight: 600; }
     .open-link {
-      flex-shrink: 0; background: #f0eeff; color: var(--purple);
-      border: 1.5px solid #d4cff5; border-radius: 8px;
-      padding: 5px 12px; font-size: 12px; font-weight: 700; text-decoration: none;
+      flex-shrink: 0;
+      background: var(--p4);
+      color: var(--p2);
+      border: none;
+      border-radius: 10px;
+      padding: 7px 14px; font-size: 12px; font-weight: 800; text-decoration: none;
     }
   </style>
 </head>
@@ -244,24 +524,187 @@
 <header class="header">
   <div class="header-left">
     <span class="back-btn" id="backBtn" onclick="goBack()">‹ 戻る</span>
-    <span class="logo">ReViNa</span>
+    <span class="logo">Re<span class="logo-dot">Vi</span>Na</span>
   </div>
   <a class="logout-btn" href="/logout">ログアウト</a>
 </header>
 
-<!-- ══ HOME ══ -->
-<div class="screen active" id="screen-home">
-  <div class="section-card">
-    <div class="section-title">チームを選択</div>
-    <div id="teamList"></div>
+<!-- ══ MAIN MENU ══ -->
+<div class="screen active" id="screen-main">
+  <div class="main-hero">
+    <div class="main-hero-label">ReViNa 対応ツール</div>
+    <div class="main-hero-title">メニュー</div>
+    <div class="main-hero-sub">カテゴリを選んでください</div>
   </div>
+  <div class="menu-wrap">
+    <div class="menu-card" style="--mc:#0ea5e9; --mi:#f0f9ff" onclick="showSection('inquiry')">
+      <div class="menu-icon">📩</div>
+      <div class="menu-info">
+        <div class="menu-title">お問い合わせ</div>
+        <div class="menu-desc">初回返信・日程調整メッセージ</div>
+      </div>
+      <div class="menu-arrow">›</div>
+    </div>
+    <div class="menu-card" style="--mc:#6d28d9; --mi:#f3f0ff" onclick="showSection('data')">
+      <div class="menu-icon">📊</div>
+      <div class="menu-info">
+        <div class="menu-title">レビナデータ</div>
+        <div class="menu-desc">データ・分析・シート管理</div>
+      </div>
+      <div class="menu-arrow">›</div>
+    </div>
+    <div class="menu-card" style="--mc:#0369a1; --mi:#eff6ff" onclick="showSection('stores')">
+      <div class="menu-icon">🏪</div>
+      <div class="menu-info">
+        <div class="menu-title">店舗</div>
+        <div class="menu-desc">店舗を選択して対応フローを確認</div>
+      </div>
+      <div class="menu-arrow">›</div>
+    </div>
+    <div class="menu-card" style="--mc:#047857; --mi:#ecfdf5" onclick="showSection('report')">
+      <div class="menu-icon">📋</div>
+      <div class="menu-info">
+        <div class="menu-title">報告</div>
+        <div class="menu-desc">グループ報告・レポート送信</div>
+      </div>
+      <div class="menu-arrow">›</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ INQUIRY ══ -->
+<div class="screen" id="screen-inquiry">
+  <div class="flow-banner">
+    <div class="banner-label">お問い合わせ</div>
+    <div class="banner-title">初回返信・日程調整</div>
+    <div class="banner-store">📩 お問い合わせ対応</div>
+  </div>
+
+  <div class="input-card">
+    <div class="input-card-title">顧客情報</div>
+    <div class="input-row">
+      <label>お客様名</label>
+      <input type="text" id="inqName" placeholder="例：田中" oninput="renderInquiryAll()">
+    </div>
+    <div class="slots-toggle" onclick="toggleInqSlots()">
+      <span>📅 日程候補を編集する</span>
+      <span class="slots-arrow" id="inqSlotsArrow">▼</span>
+    </div>
+    <div class="slots-panel" id="inqSlotsPanel">
+      <div class="slot-row"><label>候補①</label><input type="text" id="inqSlot1" oninput="renderInquiryAll()"></div>
+      <div class="slot-row"><label>候補②</label><input type="text" id="inqSlot2" oninput="renderInquiryAll()"></div>
+      <div class="slot-row"><label>候補③</label><input type="text" id="inqSlot3" oninput="renderInquiryAll()"></div>
+      <div class="slot-row"><label>候補④</label><input type="text" id="inqSlot4" oninput="renderInquiryAll()"></div>
+      <div class="slot-row"><label>候補⑤</label><input type="text" id="inqSlot5" oninput="renderInquiryAll()"></div>
+    </div>
+  </div>
+
+  <div class="steps-wrap">
+    <div class="divider-label">初回返信</div>
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-badge">1</div>
+        <div class="step-info">
+          <div class="step-title">初回返信メッセージ</div>
+          <div class="step-desc">お問い合わせへの第一返信</div>
+        </div>
+      </div>
+      <div class="msg-wrap">
+        <div class="msg-bubble" id="im1"></div>
+        <button class="copy-btn" onclick="copyMsg('im1')">📋 コピーする</button>
+      </div>
+    </div>
+    <div class="divider-label">日程調整</div>
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-badge sky">↩</div>
+        <div class="step-info">
+          <div class="step-title">日程調整メッセージ</div>
+          <div class="step-desc">候補日が合わない場合の再提案</div>
+        </div>
+      </div>
+      <div class="msg-wrap">
+        <div class="msg-bubble" id="imAdj"></div>
+        <button class="copy-btn" onclick="copyMsg('imAdj')">📋 コピーする</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DATA ══ -->
+<div class="screen" id="screen-data">
+  <div class="main-hero">
+    <div class="main-hero-label">ReViNa データ</div>
+    <div class="main-hero-title">レビナデータ</div>
+    <div class="main-hero-sub">データ・分析・シート管理</div>
+  </div>
+  <div class="menu-wrap">
+    <a class="menu-card" style="--mc:#6d28d9; --mi:#f3f0ff; text-decoration:none;" href="https://docs.google.com/spreadsheets/d/1GmRMmrY9Vt3hVbbqSH3K1-zu-JrPSRTlT3eOOpVlWOU/edit?gid=1495636376#gid=1495636376" target="_blank">
+      <div class="menu-icon">📝</div>
+      <div class="menu-info">
+        <div class="menu-title">カウンセリングシート記入</div>
+        <div class="menu-desc">Googleスプレッドシートを開く</div>
+      </div>
+      <div class="menu-arrow">↗</div>
+    </a>
+    <a class="menu-card" style="--mc:#0369a1; --mi:#eff6ff; text-decoration:none;" href="https://web-production-cace.up.railway.app/inquiries?biz=gym&assignee=a5263e07-135c-4827-bb7b-4eaf59ac1650" target="_blank">
+      <div class="menu-icon">📊</div>
+      <div class="menu-info">
+        <div class="menu-title">レビナデータ</div>
+        <div class="menu-desc">問い合わせ・データ管理</div>
+      </div>
+      <div class="menu-arrow">↗</div>
+    </a>
+  </div>
+</div>
+
+<!-- ══ REPORT ══ -->
+<div class="screen" id="screen-report">
+  <div class="flow-banner">
+    <div class="banner-label">報告フロー</div>
+    <div class="banner-title">報告</div>
+    <div class="banner-store">📋 成約・未成約の報告</div>
+  </div>
+
+  <div class="input-card">
+    <div class="input-card-title">顧客情報</div>
+    <div class="input-row">
+      <label>お客様名</label>
+      <input type="text" id="reportName" placeholder="例：田中" oninput="renderReportAll()">
+    </div>
+    <div class="input-row">
+      <label>予約日時</label>
+      <input type="text" id="reportDate" placeholder="例：8/5(水) 14:00〜" oninput="renderReportAll()">
+    </div>
+  </div>
+
+  <div class="flow-tabs" id="reportTabs">
+    <div class="flow-tab active" onclick="switchReport(0)">🎉<br>成約後</div>
+    <div class="flow-tab" onclick="switchReport(1)">💌<br>未成約後</div>
+  </div>
+
+  <div id="reportContent"></div>
+</div>
+
+<!-- ══ HOME (店舗一覧) ══ -->
+<div class="screen" id="screen-home">
+  <div class="home-hero">
+    <div class="hero-label">対応ツール</div>
+    <div class="hero-title">店舗を選択</div>
+    <div class="hero-sub">担当店舗をタップしてください</div>
+  </div>
+  <div class="search-wrap">
+    <input type="text" id="storeSearch" placeholder="🔍 店舗名で検索..." oninput="filterStores(this.value)">
+  </div>
+  <div class="teams-wrap" id="teamList"></div>
 </div>
 
 <!-- ══ FLOW ══ -->
 <div class="screen" id="screen-flow">
-  <div class="flow-header">
-    <div class="flow-team-name" id="flowTeamName"></div>
-    <div class="flow-store-name" id="flowStoreName"></div>
+  <div class="flow-banner">
+    <div class="banner-label">対応フロー</div>
+    <div class="banner-title" id="flowTeamName"></div>
+    <div class="banner-store">🏋️ <span id="flowStoreName"></span></div>
   </div>
 
   <div class="input-card">
@@ -274,167 +717,414 @@
       <label>予約日時</label>
       <input type="text" id="appointmentDate" placeholder="例：8/5(水) 14:00〜" oninput="renderAll()">
     </div>
-    <div class="slots-toggle" onclick="toggleSlots()">
-      <span>📅 日程候補を編集する</span>
-      <span class="slots-arrow" id="slotsArrow">▼</span>
-    </div>
-    <div class="slots-panel" id="slotsPanel">
-      <div class="slot-row"><label>候補①</label><input type="text" id="slot1" oninput="renderAll()"></div>
-      <div class="slot-row"><label>候補②</label><input type="text" id="slot2" oninput="renderAll()"></div>
-      <div class="slot-row"><label>候補③</label><input type="text" id="slot3" oninput="renderAll()"></div>
-      <div class="slot-row"><label>候補④</label><input type="text" id="slot4" oninput="renderAll()"></div>
-      <div class="slot-row"><label>候補⑤</label><input type="text" id="slot5" oninput="renderAll()"></div>
-    </div>
-  </div>
-
-  <div class="flow-tabs">
-    <div class="flow-tab active" onclick="switchFlow(0)">📩 お問合せ</div>
-    <div class="flow-tab" onclick="switchFlow(1)">🎉 成約後</div>
-    <div class="flow-tab" onclick="switchFlow(2)">💌 未成約後</div>
   </div>
 
   <div id="flowContent"></div>
 </div>
 
 <script>
-// ──────────────────────────────────────────
-// チームデータ
-// ──────────────────────────────────────────
 const TEAMS = [
   {
     id: 'chiba-nw',
     name: '千葉北西チーム',
-    store: '四街道店',
-    icon: '🏋️', color: '#5b4fcf',
-    trainer: '担当者名',
-    tel: '000-0000-0000',
-    address: '〒000-0000 住所を入力',
-    mapUrl: 'https://maps.app.goo.gl/',
+    icon: '🏋️', color: '#6d28d9',
+    trainer: '石井拓海',
+    tel: '080-5544-1195',
     slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
-    sheets: { cs: '#', team: '#', store: '#' }
+    sheets: {
+      cs: '#',
+      team: 'https://docs.google.com/spreadsheets/d/1uDb84Z2Nxk56Bq0v73s_9szqdy-74RzxTREXi-eWwmQ/edit?gid=2007276136#gid=2007276136',
+      store: 'https://docs.google.com/spreadsheets/d/1qy9M8lhvkjLKVT0mgueB81oKatEMnGrfuYl0DoS_p8I/edit?gid=354638220#gid=354638220'
+    },
+    stores: [
+      { name: '四街道店', address: '〒284-0005 千葉県四街道市四街道1丁目4−8 Aビル 201', mapUrl: 'https://maps.app.goo.gl/zp3wg3ZVNZ4wspzb7' }
+    ]
   },
   {
     id: 'team-chiba',
     name: 'チームChiba',
-    store: '佐倉店',
-    icon: '🏋️', color: '#0891b2',
-    trainer: '担当者名',
-    tel: '000-0000-0000',
-    address: '〒000-0000 住所を入力',
-    mapUrl: 'https://maps.app.goo.gl/',
+    icon: '🏋️', color: '#0369a1',
+    trainer: '石井拓海',
+    tel: '080-5544-1195',
     slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
-    sheets: { cs: '#', team: '#', store: '#' }
+    sheets: {
+      cs: '#',
+      team: 'https://docs.google.com/spreadsheets/d/1tSgaTemfJDh39CmPkUpzkSh8Lwg7WfG91dYJWoF32tk/edit?gid=1000584110#gid=1000584110',
+      store: '#'
+    },
+    stores: [
+      { name: '佐倉店', address: '〒285-0811 千葉県佐倉市表町3丁目12-1 サクラビル2階', mapUrl: 'https://maps.app.goo.gl/9wJN1Y7TBXgiwKXp9', storeSheet: 'https://docs.google.com/spreadsheets/d/1plyHDnjbsp7oSJv06oOQ7ZkE-CpqQ5Vf-GUR1-7MjNg/edit?gid=401513502#gid=401513502' },
+      { name: '千葉店', address: '〒260-0021 千葉県千葉市中央区新宿２丁目３−１７ ファーストステージ 101', mapUrl: 'https://maps.app.goo.gl/73QMHgXgHHH1jWVY7', storeSheet: 'https://docs.google.com/spreadsheets/d/1i0RM3DxXS42bZ4lSZvfNvWbzQvkn3Yrv8V_r8AarOTM/edit?gid=401513502#gid=401513502' }
+    ]
   },
   {
     id: 'rinkai',
     name: '臨海チーム',
-    store: '根岸店',
-    icon: '🏋️', color: '#059669',
-    trainer: '担当者名',
-    tel: '000-0000-0000',
-    address: '〒000-0000 住所を入力',
-    mapUrl: 'https://maps.app.goo.gl/',
+    icon: '🏋️', color: '#047857',
+    trainer: '石井拓海',
+    tel: '080-5544-1195',
     slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
-    sheets: { cs: '#', team: '#', store: '#' }
+    sheets: {
+      cs: 'https://docs.google.com/spreadsheets/d/1ApRd28Fxl5kcvcgxRxG5J7Z7qh4c5cUD6Pvrzhv4HBU/edit?gid=1733049072#gid=1733049072',
+      team: 'https://docs.google.com/spreadsheets/d/1pu-KNUbc8LzyGxsK3bOkbDVLMfwlMjNFfWeMfIlY-sQ/edit?gid=1000584110#gid=1000584110',
+      store: 'https://docs.google.com/spreadsheets/d/1CV1lXq_U5t6HM1aYZ8UZ9EFR_mVDjBkqsvaUmA7G-T8/edit?gid=401513502#gid=401513502'
+    },
+    stores: [
+      { name: '根岸店', address: '〒235-0007 神奈川県横浜市磯子区西町11-8 根岸駅前ビル 2-K', mapUrl: 'https://maps.app.goo.gl/zy4qKLgaPSsiux8v9' },
+      { name: '新杉田店', address: '〒235-0036 神奈川県横浜市磯子区中原１丁目３−２０ 第二千代田ビル 102', mapUrl: 'https://maps.app.goo.gl/LtZaiSYHCfw163537' },
+      { name: '逗子店', address: '〒249-0006 神奈川県逗子市逗子１丁目２−８ プレイス吉沢ビル 3', mapUrl: 'https://maps.app.goo.gl/h5PB6mcWhaUfMx797' }
+    ]
   },
   {
     id: 'hamadai',
     name: '浜台チーム',
-    store: 'さがみ野店',
-    icon: '🏋️', color: '#d97706',
-    trainer: '担当者名',
-    tel: '000-0000-0000',
-    address: '〒000-0000 住所を入力',
-    mapUrl: 'https://maps.app.goo.gl/',
+    icon: '🏋️', color: '#b45309',
+    trainer: '石井拓海',
+    tel: '080-5544-1195',
     slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
-    sheets: { cs: '#', team: '#', store: '#' }
+    sheets: {
+      cs: 'https://docs.google.com/spreadsheets/d/1ApRd28Fxl5kcvcgxRxG5J7Z7qh4c5cUD6Pvrzhv4HBU/edit?gid=1733049072#gid=1733049072',
+      team: 'https://docs.google.com/spreadsheets/d/1qP-aFks1wc1UyV5rqNFyhz77_LWIcvhQwTAgj-5mhkY/edit?gid=1000584110#gid=1000584110',
+      store: 'https://docs.google.com/spreadsheets/d/1HMzLRkKS6dRcpFBL3NxoSjrT_qDTWz8EXgmx_7Rhvsk/edit?gid=401513502#gid=401513502'
+    },
+    stores: [
+      { name: 'さがみ野店', address: '〒252-1131 神奈川県綾瀬市寺尾北２丁目１７−２９ オークビル 101', mapUrl: 'https://maps.app.goo.gl/Te9D5TFkioQtGU2j6' },
+      { name: '鶴川店', address: '〒195-0053 東京都町田市能ヶ谷４丁目３−１８ 第２京香ビル 102', mapUrl: 'https://maps.app.goo.gl/7oPw5ZNyyz1BLxiw5' }
+    ]
   },
   {
     id: 'tokyu',
     name: '東急チーム',
-    store: '日吉',
-    icon: '🏋️', color: '#dc2626',
-    trainer: '担当者名',
-    tel: '000-0000-0000',
-    address: '〒000-0000 住所を入力',
-    mapUrl: 'https://maps.app.goo.gl/',
+    icon: '🏋️', color: '#b91c1c',
+    trainer: '石井拓海',
+    tel: '080-5544-1195',
     slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
-    sheets: { cs: '#', team: '#', store: '#' }
+    sheets: {
+      cs: '#',
+      team: 'https://docs.google.com/spreadsheets/d/1EPz-cQv7fXYIO3IrgcxnHIeOAaFYoY8njmgf4Ae0n7s/edit?gid=2007276136#gid=2007276136',
+      store: 'https://docs.google.com/spreadsheets/d/1jIdayFfSi7_C9qJjsQ40D1VZQggYTA5w6T3NkdWuff8/edit?gid=401513502#gid=401513502'
+    },
+    stores: [
+      { name: '日吉店', address: '〒223-0061 神奈川県横浜市港北区日吉２丁目３−８ 日吉ビル 4F 柏屋', mapUrl: 'https://maps.app.goo.gl/QEVtaQDXV1euLC2v9' }
+    ]
   },
   {
     id: 'shonan',
     name: '湘南海道チーム',
-    store: '茅ヶ崎店 / 藤沢本町店 / 保土ヶ谷店',
     icon: '🏋️', color: '#7c3aed',
     trainer: '石井拓海',
     tel: '080-5544-1195',
-    address: '〒253-0056 神奈川県茅ヶ崎市共恵１丁目８−１５ 村田ビル 303',
-    mapUrl: 'https://maps.app.goo.gl/',
     slots: ['8/5(水) 21:00〜','8/6(木) 14:00〜','8/7(金) 14:00〜','8/10(月) 14:00〜20:00','8/11(火) 19:00〜21:00'],
     sheets: {
       cs: 'https://docs.google.com/spreadsheets/d/1ApRd28Fxl5kcvcgxRxG5J7Z7qh4c5cUD6Pvrzhv4HBU/edit?gid=1336394103#gid=1336394103',
       team: 'https://docs.google.com/spreadsheets/d/1AfzqfXM4YKCrgiXSIzrPjAcXEHSXtKgBV179ZyIVI5Y/edit?gid=1000584110#gid=1000584110',
-      store: 'https://docs.google.com/spreadsheets/d/1-Vtp5tuZSR6RduTayXJHz2OxamVZ2dEVDmUtv5jEFWo/edit?gid=401513502#gid=401513502'
-    }
+      store: '#'
+    },
+    stores: [
+      { name: '茅ヶ崎店', address: '〒253-0056 神奈川県茅ヶ崎市共恵１丁目８−１５ 村田ビル 303', mapUrl: 'https://maps.app.goo.gl/sRNZ1GYfThxSN14h6', storeSheet: 'https://docs.google.com/spreadsheets/d/1-Vtp5tuZSR6RduTayXJHz2OxamVZ2dEVDmUtv5jEFWo/edit?gid=401513502#gid=401513502' },
+      { name: '藤沢本町店', address: '〒251-0052 神奈川県藤沢市藤沢３丁目１−２１ リベルテ店舗左', mapUrl: 'https://maps.app.goo.gl/VQWknJwdiJAQPAqh9', storeSheet: 'https://docs.google.com/spreadsheets/d/1lhYuBaVV0onHr7NrVIoMy5cKv6wcdy3YIm6WFa0z5nY/edit?gid=401513502#gid=401513502' },
+      { name: '保土ヶ谷店', address: '〒240-0023 神奈川県横浜市保土ケ谷区岩井町８６−７ 要ビル 303号室', mapUrl: 'https://maps.app.goo.gl/45DrtVyRXbcAZVib8', storeSheet: 'https://docs.google.com/spreadsheets/d/1y3m4fiibxhFbteNhnmC7-nCYkwjBwrFe5el_QUNv1bw/edit?gid=401513502#gid=401513502' },
+      { name: '寒川店', address: '〒253-0105 神奈川県高座郡寒川町岡田１丁目９−１ 司ビル 一階右端', mapUrl: 'https://maps.app.goo.gl/CTU1Y1mAQGz2bypLA' },
+      { name: '鴨宮店', address: '〒250-0874 神奈川県小田原市鴨宮25−１ 天野ハイツ 1F', mapUrl: 'https://maps.app.goo.gl/cB1jW6XChNYpXVXr5' },
+      { name: '辻堂店', address: '〒251-0047 神奈川県藤沢市辻堂２丁目１−２ アルウェットプティ 301', mapUrl: 'https://maps.app.goo.gl/zYiY3QNhkG9WEjn58' }
+    ]
+  },
+  {
+    id: 'joso',
+    name: '常総チーム',
+    icon: '🏋️', color: '#0f766e',
+    trainer: '石井拓海',
+    tel: '080-5544-1195',
+    slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
+    sheets: {
+      cs: 'https://docs.google.com/spreadsheets/d/1ApRd28Fxl5kcvcgxRxG5J7Z7qh4c5cUD6Pvrzhv4HBU/edit?gid=1733049072#gid=1733049072',
+      team: 'https://web-production-cace.up.railway.app/login?biz=gym&next=%2Finquiries',
+      store: 'https://web-production-cace.up.railway.app/login?biz=gym&next=%2Finquiries'
+    },
+    stores: [
+      { name: '馬橋', address: '〒271-0046 千葉県松戸市西馬橋蔵元町１０１', mapUrl: 'https://maps.app.goo.gl/PL62RG4HqWcWMFao6' }
+    ]
+  },
+  {
+    id: 'yokohama',
+    name: '横浜チーム',
+    icon: '🏋️', color: '#0891b2',
+    trainer: '石井拓海',
+    tel: '080-5544-1195',
+    slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
+    sheets: { cs: '#', team: '#', store: '#' },
+    stores: [
+      { name: '新子安店', address: '〒221-0014 神奈川県横浜市神奈川区入江１丁目６−７ SHOKEN Residence横浜大口 3', mapUrl: 'https://maps.app.goo.gl/fq6qUDPAqZKG5CpT7' },
+      { name: '港南台店', address: '〒234-0055 神奈川県横浜市港南区日野南１丁目１−２６ 大塚貸店舗 102', mapUrl: 'https://maps.app.goo.gl/D67sqTpPQo6nLQvc7' },
+      { name: '三ツ境店', address: '〒246-0022 神奈川県横浜市瀬谷区三ツ境１３−１ 黒沼ビル 2階', mapUrl: 'https://maps.app.goo.gl/6pePWCCtDqePHF3o9' },
+      { name: '白楽店', address: '〒221-0076 神奈川県横浜市神奈川区白幡町２−１１ ますみ美ハイツ 1階', mapUrl: 'https://maps.app.goo.gl/eRotDmYx79An1Apu5' }
+    ]
+  },
+  {
+    id: 'chiba-east',
+    name: '千葉東チーム',
+    icon: '🏋️', color: '#d97706',
+    trainer: '石井拓海',
+    tel: '080-5544-1195',
+    slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
+    sheets: { cs: '#', team: '#', store: '#' },
+    stores: [
+      { name: '津田沼店', address: '〒274-0825 千葉県船橋市前原西１丁目２６−１８ ハシモトビル 302号室', mapUrl: 'https://maps.app.goo.gl/QTnmUnyteGsK1XW76' },
+      { name: '我孫子店', address: '〒270-1166 千葉県我孫子市我孫子１丁目１７−２１ 1F', mapUrl: 'https://maps.app.goo.gl/1uLsYEF8PLbcsXZJ8' },
+      { name: '下総中山店', address: '〒272-0015 千葉県市川市鬼高３丁目５−５ 鬼高 店舗 1階', mapUrl: 'https://maps.app.goo.gl/XyrKECpUJkrT9j6j6' },
+      { name: '都賀店', address: '〒264-0026 千葉県千葉市若葉区西都賀３丁目３−１７ ライブリー西都賀 西口2F', mapUrl: 'https://maps.app.goo.gl/P2AZYvDPRbq5ZtKx6' }
+    ]
+  },
+  {
+    id: 'tokyo-saitama',
+    name: '東京埼玉チーム',
+    icon: '🏋️', color: '#c026d3',
+    trainer: '石井拓海',
+    tel: '080-5544-1195',
+    slots: ['候補①を入力','候補②を入力','候補③を入力','候補④を入力','候補⑤を入力'],
+    sheets: { cs: '#', team: '#', store: '#' },
+    stores: [
+      { name: '国分寺店', address: '〒185-0021 東京都国分寺市南町２丁目１−２８ 飯塚ビル 301', mapUrl: 'https://maps.app.goo.gl/xsnu8LBdCHxRJusv9' },
+      { name: '小手指店', address: '〒359-1141 埼玉県所沢市小手指町１丁目２４−４ ラスター小手指 102', mapUrl: 'https://maps.app.goo.gl/eHQhMC5FetoBRUGB9' }
+    ]
   }
 ];
 
-// ──────────────────────────────────────────
-// 状態
-// ──────────────────────────────────────────
-let currentTeam = null;
-let currentFlow = 0;
+const ALL_STORES = TEAMS.flatMap(team =>
+  team.stores.map((store, i) => ({ ...store, team, storeIndex: i }))
+);
 
-// ──────────────────────────────────────────
-// テンプレート生成
-// ──────────────────────────────────────────
+let currentTeam = null;
+let currentStore = null;
+let currentFlow = 0;
+let currentReport = 0;
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showSection(section) {
+  document.getElementById('backBtn').style.display = 'flex';
+  window.scrollTo(0, 0);
+  if (section === 'stores') {
+    const searchEl = document.getElementById('storeSearch');
+    if (searchEl) { searchEl.value = ''; renderStoreList(''); }
+    showScreen('screen-home');
+  } else if (section === 'data') {
+    showScreen('screen-data');
+  } else if (section === 'inquiry') {
+    renderInquiryAll();
+    showScreen('screen-inquiry');
+  } else if (section === 'report') {
+    currentReport = 0;
+    document.querySelectorAll('#reportTabs .flow-tab').forEach((t,i) => t.classList.toggle('active', i === 0));
+    renderReport();
+    showScreen('screen-report');
+  }
+}
+
+function buildHome() {
+  renderStoreList('');
+}
+
+function filterStores(query) {
+  renderStoreList(query);
+}
+
+function renderStoreList(query) {
+  const q = query.trim().toLowerCase();
+  const filtered = ALL_STORES.filter(s => !q || s.name.toLowerCase().includes(q));
+  const list = document.getElementById('teamList');
+  if (filtered.length === 0) {
+    list.innerHTML = '<div class="no-results">店舗が見つかりません</div>';
+    return;
+  }
+  list.innerHTML = filtered.map(s => `
+    <div class="team-card" style="--accent-color:${s.team.color}; --icon-bg:${s.team.color}18" onclick="selectStoreDirectly('${s.team.id}', ${s.storeIndex})">
+      <div class="team-icon-wrap">📍</div>
+      <div class="team-info">
+        <div class="team-name">${s.name}</div>
+        <div class="team-stores">${s.address}</div>
+      </div>
+      <div class="team-arrow">›</div>
+    </div>
+  `).join('');
+}
+
+function selectStoreDirectly(teamId, storeIndex) {
+  currentTeam = TEAMS.find(t => t.id === teamId);
+  currentStore = currentTeam.stores[storeIndex];
+  currentFlow = 0;
+  showFlow();
+}
+
+/* ── お問い合わせフロー ── */
+function subInquiry(tmpl) {
+  const name  = document.getElementById('inqName').value.trim() || '〇〇';
+  const slots = [1,2,3,4,5].map(i => document.getElementById(`inqSlot${i}`).value.trim() || `候補${['①','②','③','④','⑤'][i-1]}`);
+  return tmpl
+    .replace(/\{名前\}/g, name)
+    .replace(/\{候補①\}/g, slots[0])
+    .replace(/\{候補②\}/g, slots[1])
+    .replace(/\{候補③\}/g, slots[2])
+    .replace(/\{候補④\}/g, slots[3])
+    .replace(/\{候補⑤\}/g, slots[4]);
+}
+
+function renderInquiryBubble(el, tmpl) {
+  const escaped = subInquiry(tmpl).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  el.innerHTML = escaped.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+}
+
+function renderInquiryAll() {
+  const trainer = '石井拓海';
+  const m1 = `{名前}さま\nはじめまして。\n\nPERSONALGYM ReViNaの${trainer}と申します。\n\nこの度はお問い合わせ頂き、誠にありがとうございます。\n\nまた早速ですが無料体験&カウンセリングの日時について\n\n{候補①}\n{候補②}\n{候補③}\n{候補④}\n{候補⑤}\n\n上記日程でご都合いかがでしょうか？\n\n※所要時間60〜75分ほど\n\nその他でご希望の時間がございましたら、３つほどいただけるとスムーズにご予約できます。\n\nご返信お待ちしております🙇‍♂️\n\nPERSONALGYM ReViNa\n${trainer}`;
+  const mAdj = `{名前}さま\n\nご返信ありがとうございます！\n\nご都合が合わず申し訳ございません。\n改めて以下の日程はいかがでしょうか？\n\n{候補①}\n{候補②}\n{候補③}\n{候補④}\n{候補⑤}\n\n※所要時間60〜75分ほど\n\nご返信お待ちしております🙇‍♂️\n\nPERSONALGYM ReViNa\n${trainer}`;
+  const el1 = document.getElementById('im1');
+  const el2 = document.getElementById('imAdj');
+  if (el1) renderInquiryBubble(el1, m1);
+  if (el2) renderInquiryBubble(el2, mAdj);
+}
+
+function toggleInqSlots() {
+  document.getElementById('inqSlotsPanel').classList.toggle('open');
+  document.getElementById('inqSlotsArrow').classList.toggle('open');
+}
+
+/* ── 報告フロー ── */
+function switchReport(i) {
+  currentReport = i;
+  document.querySelectorAll('#reportTabs .flow-tab').forEach((t,j) => t.classList.toggle('active', i === j));
+  renderReport();
+  window.scrollTo(0, 0);
+}
+
+function subReport(tmpl) {
+  const name = document.getElementById('reportName').value.trim() || '〇〇';
+  const date = document.getElementById('reportDate').value.trim() || '〇/〇（曜）〇〇:00〜';
+  return tmpl.replace(/\{名前\}/g, name).replace(/\{日時\}/g, date);
+}
+
+function renderReportBubble(el, tmpl) {
+  const escaped = subReport(tmpl).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  el.innerHTML = escaped.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+}
+
+function renderReportAll() { renderReport(); }
+
+function renderReport() {
+  const trainer = '石井拓海';
+  const content = document.getElementById('reportContent');
+  if (!content) return;
+
+  const tmpl = {
+    s1:  `本日はお忙しい中ご来店いただきありがとうございました😊\nこれから{名前}様の理想の身体に向けて全力でサポートさせて頂きますので、よろしくお願いいたします！\n\n以下、初回日のご案内となりますのでお手隙の際にご確認をお願いいたします。`,
+    s2a: `【報告】\n\n【依頼】\n本日成約の{名前}さんにラインにて自己紹介挨拶と予約調整お願いします！\n\n【共有】\n仮予約 2枠は下記日程になります！\n問題なければ挨拶のみお願いいたします！\n\n{日時}`,
+    s2b: `【依頼 2】\n本日成約の{名前}さんの引き継ぎを行えればと思います！\n所要時間は15分ほどで、下記日程はいかがでしょうか！\n難しい場合は5つほど可能なお時間を共有いただけますと嬉しいです！\n※なるべく時間枠多めの日を送っていただると！`,
+    s3:  `【報告】\n{名前}成約です！\n\n【共有】\n引き継ぎ完了次第報告します！`,
+    u1:  `{名前}様\n\n本日はお忙しい中、カウンセリングにお越し頂きありがとうございました😊\n\n当店をお選び頂きました際には、ご期待を上回るサポートと結果をお約束いたします！\n\nご検討の上ご返答をお待ちしております😌\n\nPERSONALGYM ReViNa ${trainer}`,
+    u3:  `【報告】\n\n【共有】\nシート記入完了`,
+  };
+
+  if (currentReport === 0) {
+    content.innerHTML = `
+      <div class="steps-wrap">
+        <div class="divider-label">STEP 1 — お客様へ</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge">1</div><div class="step-info"><div class="step-title">成約後メッセージ</div><div class="step-desc">お客様への感謝・今後の案内</div></div></div>
+          <div class="msg-wrap"><div class="msg-bubble" id="rs1"></div><button class="copy-btn" onclick="copyMsg('rs1')">📋 コピーする</button></div>
+        </div>
+        <div class="divider-label">STEP 2 — グループ報告</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge teal">2</div><div class="step-info"><div class="step-title">グループLINE報告</div><div class="step-desc">チームへの成約報告・依頼</div></div></div>
+          <div class="msg-wrap">
+            <span class="msg-label">報告 ①</span>
+            <div class="msg-bubble" id="rs2a"></div>
+            <button class="copy-btn" onclick="copyMsg('rs2a')">📋 コピーする</button>
+          </div>
+          <div class="msg-wrap">
+            <span class="msg-label">報告 ②（引き継ぎ依頼）</span>
+            <div class="msg-bubble" id="rs2b"></div>
+            <button class="copy-btn" onclick="copyMsg('rs2b')">📋 コピーする</button>
+          </div>
+        </div>
+        <div class="divider-label">STEP 3 — カウンセリング報告</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge teal">3</div><div class="step-info"><div class="step-title">カウンセリンググループ報告</div><div class="step-desc">専用グループへの成約報告</div></div></div>
+          <div class="msg-wrap"><div class="msg-bubble" id="rs3"></div><button class="copy-btn" onclick="copyMsg('rs3')">📋 コピーする</button></div>
+        </div>
+      </div>`;
+    renderReportBubble(document.getElementById('rs1'),  tmpl.s1);
+    renderReportBubble(document.getElementById('rs2a'), tmpl.s2a);
+    renderReportBubble(document.getElementById('rs2b'), tmpl.s2b);
+    renderReportBubble(document.getElementById('rs3'),  tmpl.s3);
+  } else {
+    content.innerHTML = `
+      <div class="steps-wrap">
+        <div class="divider-label">STEP 1 — フォローメッセージ</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge">1</div><div class="step-info"><div class="step-title">未成約フォローメッセージ</div><div class="step-desc">検討中のお客様へのフォロー</div></div></div>
+          <div class="msg-wrap"><div class="msg-bubble" id="ru1"></div><button class="copy-btn" onclick="copyMsg('ru1')">📋 コピーする</button></div>
+        </div>
+        <div class="divider-label">STEP 2 — グループ報告</div>
+        <div class="step-card">
+          <div class="step-head"><div class="step-badge teal">2</div><div class="step-info"><div class="step-title">グループ報告</div><div class="step-desc">シート記入完了の報告</div></div></div>
+          <div class="msg-wrap"><div class="msg-bubble" id="ru3"></div><button class="copy-btn" onclick="copyMsg('ru3')">📋 コピーする</button></div>
+        </div>
+      </div>`;
+    renderReportBubble(document.getElementById('ru1'), tmpl.u1);
+    renderReportBubble(document.getElementById('ru3'), tmpl.u3);
+  }
+}
+
+function showFlow() {
+  document.getElementById('flowTeamName').textContent = currentTeam.name;
+  document.getElementById('flowStoreName').textContent = currentStore.name;
+  showScreen('screen-flow');
+  document.getElementById('backBtn').style.display = 'flex';
+  window.scrollTo(0, 0);
+  renderFlow();
+}
+
 function buildTemplates(team) {
   const t = team.trainer;
   const tel = team.tel;
-  const addr = team.address;
-  const map = team.mapUrl;
-  const gym = `PERSONALGYM ReViNa(レビナ)${team.store}`;
+  const addr = currentStore.address;
+  const map = currentStore.mapUrl;
+  const gym = `PERSONALGYM ReViNa(レビナ)${currentStore.name}`;
 
   return {
     inquiry: {
       m1: `{名前}さま\nはじめまして。\n\nPERSONALGYM ReViNaの${t}と申します。\n\nこの度はお問い合わせ頂き、誠にありがとうございます。\n\nまた早速ですが無料体験&カウンセリングの日時について\n\n{候補①}\n{候補②}\n{候補③}\n{候補④}\n{候補⑤}\n\n上記日程でご都合いかがでしょうか？\n\n※所要時間60〜75分ほど\n\nその他でご希望の時間がございましたら、３つほどいただけるとスムーズにご予約できます。\n\nご返信お待ちしております🙇‍♂️\n\nPERSONALGYM ReViNa\n${t}`,
-
       m_adj: `{名前}さま\n\nご返信ありがとうございます！\n\nご都合が合わず申し訳ございません。\n改めて以下の日程はいかがでしょうか？\n\n{候補①}\n{候補②}\n{候補③}\n{候補④}\n{候補⑤}\n\n※所要時間60〜75分ほど\n\nご返信お待ちしております🙇‍♂️\n\nPERSONALGYM ReViNa\n${t}`,
-
       m3: `ご返信ありがとうございます！\n\n当日の詳細をお送りいたしますのでご確認ください。\n\n【日時】\n{日時}\n※完全予約制ですので、\nお時間丁度を目安にお越しください。\n\n\n【持ち物】\n・トレーニングウェア（更衣室あり）\n・タオル\n・シューズ（任意）\n※ウォーターサーバーがございます。\n\n【経路案内】\n${gym}\n\n${addr}\n${map}\n\n【駐車場】\nレビナ専用の駐車場はございません。\nお近くのコインパーキングにお止めください。\n料金に関しては、レシートをLINEに送っていただけますとご指定の口座にお振込いたします！\n\n【担当者】\n${t}\n\n経路など当日のご連絡がございましたら、以下におかけください。\n${tel}\n\nご不明点がございましたらお気軽にお聞きくださいませ。\n\n当日はよろしくお願いいたします。`,
-
       m5: `{名前}様\n\nお世話になっております。\nPERSONALGYM ReViNaの${t}です。\n\nご予約いただいた無料カウンセリング/体験カウンセリングの前日となりましたのでお知らせ致します！\n\n【日時】\n{日時}\n※完全予約制ですので、\nお時間丁度を目安にお越しください。\n\n【持ち物】\n・トレーニングウェア（更衣室あり）\n・タオル\n・シューズ（任意）\n※ウォーターサーバーがございます。\n\n【経路案内】\n${gym}\n\n${addr}\n${map}\n\n【駐車場】\nレビナ専用の駐車場はございません。\nお近くのコインパーキングにお止めください。\n料金に関しては、レシートをLINEに送っていただけますとご指定の口座にお振込いたします！\n\n【担当者】\n${t}\n\n経路など当日のご連絡がございましたら、以下におかけください。\n${tel}\n\nご不明点がございましたらお気軽にお聞きくださいませ。\n\n当日はよろしくお願いいたします。`,
     },
     contract: {
       s1: `本日はお忙しい中ご来店いただきありがとうございました😊\nこれから{名前}様の理想の身体に向けて全力でサポートさせて頂きますので、よろしくお願いいたします！\n\n以下、初回日のご案内となりますのでお手隙の際にご確認をお願いいたします。`,
-
       s2a: `【報告】\n\n【依頼】\n本日成約の{名前}さんにラインにて自己紹介挨拶と予約調整お願いします！\n\n【共有】\n仮予約 2枠は下記日程になります！\n問題なければ挨拶のみお願いいたします！\n\n{日時}`,
-
       s2b: `【依頼 2】\n本日成約の{名前}さんの引き継ぎを行えればと思います！\n所要時間は15分ほどで、下記日程はいかがでしょうか！\n難しい場合は5つほど可能なお時間を共有いただけますと嬉しいです！\n※なるべく時間枠多めの日を送っていただると！`,
-
       s3: `【報告】\n{名前}成約です！\n\n【共有】\n引き継ぎ完了次第報告します！`,
     },
     nocontract: {
       u1: `{名前}様\n\n本日はお忙しい中、カウンセリングにお越し頂きありがとうございました😊\n\n当店をお選び頂きました際には、ご期待を上回るサポートと結果をお約束いたします！\n\nご検討の上ご返答をお待ちしております😌\n\nPERSONALGYM ReViNa ${t}`,
-
       u3: `【報告】\n\n【共有】\nシート記入完了`,
     }
   };
 }
 
-// ──────────────────────────────────────────
-// 変数置換
-// ──────────────────────────────────────────
 function getVals(team) {
   const slotDefaults = team ? team.slots : [];
+  const sv = (id, def) => { const el = document.getElementById(id); return el ? el.value.trim() : def || ''; };
   return {
     '{名前}':   document.getElementById('customerName').value.trim() || '〇〇',
     '{日時}':   document.getElementById('appointmentDate').value.trim() || '〇/〇（曜）〇〇:00〜',
-    '{候補①}': document.getElementById('slot1').value.trim() || slotDefaults[0] || '候補①',
-    '{候補②}': document.getElementById('slot2').value.trim() || slotDefaults[1] || '候補②',
-    '{候補③}': document.getElementById('slot3').value.trim() || slotDefaults[2] || '候補③',
-    '{候補④}': document.getElementById('slot4').value.trim() || slotDefaults[3] || '候補④',
-    '{候補⑤}': document.getElementById('slot5').value.trim() || slotDefaults[4] || '候補⑤',
+    '{候補①}': sv('slot1', slotDefaults[0]) || slotDefaults[0] || '候補①',
+    '{候補②}': sv('slot2', slotDefaults[1]) || slotDefaults[1] || '候補②',
+    '{候補③}': sv('slot3', slotDefaults[2]) || slotDefaults[2] || '候補③',
+    '{候補④}': sv('slot4', slotDefaults[3]) || slotDefaults[3] || '候補④',
+    '{候補⑤}': sv('slot5', slotDefaults[4]) || slotDefaults[4] || '候補⑤',
   };
 }
 
@@ -449,221 +1139,48 @@ function renderBubble(el, tmpl, team) {
   el.innerHTML = escaped.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
 }
 
-// ──────────────────────────────────────────
-// ホーム
-// ──────────────────────────────────────────
-function buildHome() {
-  const list = document.getElementById('teamList');
-  list.innerHTML = TEAMS.map(t => `
-    <div class="team-item" onclick="selectTeam('${t.id}')">
-      <div class="team-icon" style="background:${t.color}22">${t.icon}</div>
-      <div class="team-info">
-        <div class="team-name">${t.name}</div>
-        <div class="team-store">${t.store}</div>
-      </div>
-      <div class="arrow">›</div>
-    </div>
-  `).join('');
-}
-
-// ──────────────────────────────────────────
-// チーム選択
-// ──────────────────────────────────────────
-function selectTeam(id) {
-  currentTeam = TEAMS.find(t => t.id === id);
-  currentFlow = 0;
-
-  document.getElementById('flowTeamName').textContent = currentTeam.name;
-  document.getElementById('flowStoreName').textContent = currentTeam.store;
-
-  // スロットのデフォルト値をセット
-  currentTeam.slots.forEach((s, i) => {
-    const el = document.getElementById(`slot${i+1}`);
-    if (el && !el.value) el.placeholder = s;
-  });
-
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-flow').classList.add('active');
-  document.getElementById('backBtn').style.display = 'flex';
-  document.querySelectorAll('.flow-tab').forEach((t,i) => t.classList.toggle('active', i === 0));
-  window.scrollTo(0, 0);
-  renderFlow();
-}
-
-// ──────────────────────────────────────────
-// フロー切替
-// ──────────────────────────────────────────
 function switchFlow(i) {
   currentFlow = i;
   document.querySelectorAll('.flow-tab').forEach((t,j) => t.classList.toggle('active', i === j));
   renderFlow();
 }
 
-// ──────────────────────────────────────────
-// フロー描画
-// ──────────────────────────────────────────
 function renderFlow() {
   const team = currentTeam;
   const tmpls = buildTemplates(team);
-  const cs = team.sheets.cs;
-  const tm = team.sheets.team;
-  const st = team.sheets.store;
   const content = document.getElementById('flowContent');
 
-  if (currentFlow === 0) {
-    content.innerHTML = `
-      <div class="steps-wrap">
-        <div class="divider-label">STEP 1 — 初回返信</div>
-        <div class="step-card">
-          <div class="step-head"><div class="step-badge">1</div><div class="step-info"><div class="step-title">初回返信メッセージ</div><div class="step-desc">お問い合わせへの第一返信</div></div></div>
-          <div class="msg-wrap"><div class="msg-bubble" id="m1"></div><button class="copy-btn" onclick="copyMsg('m1')">📋 コピーする</button></div>
-        </div>
-        <div class="step-card">
-          <div class="step-head"><div class="step-badge sky">↩</div><div class="step-info"><div class="step-title">日程調整メッセージ</div><div class="step-desc">候補日が合わない場合の再提案</div></div></div>
-          <div class="msg-wrap"><div class="msg-bubble" id="m_adj"></div><button class="copy-btn" onclick="copyMsg('m_adj')">📋 コピーする</button></div>
-        </div>
-
-        <div class="divider-label">STEP 2 — シート記入・報告</div>
-        <div class="step-card">
-          <div class="step-head"><div class="step-badge indigo">2</div><div class="step-info"><div class="step-title">シート記入・グループ報告</div><div class="step-desc">各シートに記入してグループに報告</div></div></div>
-          <div class="action-wrap">
-            <div class="action-item"><input type="checkbox"><span class="action-label">カウンセリングシート記入</span><a class="open-link" href="${cs}" target="_blank">開く</a></div>
-            <div class="action-item"><input type="checkbox"><span class="action-label">チームシート記入</span><a class="open-link" href="${tm}" target="_blank">開く</a></div>
-            <div class="action-item"><input type="checkbox"><span class="action-label">グループ報告</span></div>
-          </div>
-        </div>
-
-        <div class="divider-label">STEP 3 — 日程確定</div>
-        <div class="step-card">
-          <div class="step-head"><div class="step-badge">3</div><div class="step-info"><div class="step-title">日程確定メッセージ</div><div class="step-desc">当日詳細の送付</div></div></div>
-          <div class="msg-wrap"><div class="msg-bubble" id="m3"></div><button class="copy-btn" onclick="copyMsg('m3')">📋 コピーする</button></div>
-        </div>
-
-        <div class="divider-label">STEP 4 — 記入・カレンダー</div>
-        <div class="step-card">
-          <div class="step-head"><div class="step-badge indigo">4</div><div class="step-info"><div class="step-title">シート記入・報告・カレンダー</div><div class="step-desc">全シートへの記入とカレンダー登録</div></div></div>
-          <div class="action-wrap">
-            <div class="action-item"><input type="checkbox"><span class="action-label">カウンセリングシート記入</span><a class="open-link" href="${cs}" target="_blank">開く</a></div>
-            <div class="action-item"><input type="checkbox"><span class="action-label">チームシート記入</span><a class="open-link" href="${tm}" target="_blank">開く</a></div>
-            <div class="action-item"><input type="checkbox"><span class="action-label">グループ報告</span></div>
-            <div class="action-item"><input type="checkbox"><span class="action-label">カレンダー記入</span></div>
-          </div>
-        </div>
-
-        <div class="divider-label">STEP 5 — 前日リマインド</div>
-        <div class="step-card">
-          <div class="step-head"><div class="step-badge">5</div><div class="step-info"><div class="step-title">前日リマインド</div><div class="step-desc">カウンセリング前日に送信</div></div></div>
-          <div class="msg-wrap"><div class="msg-bubble" id="m5"></div><button class="copy-btn" onclick="copyMsg('m5')">📋 コピーする</button></div>
-        </div>
-      </div>`;
-    renderBubble(document.getElementById('m1'),    tmpls.inquiry.m1,    team);
-    renderBubble(document.getElementById('m_adj'), tmpls.inquiry.m_adj, team);
-    renderBubble(document.getElementById('m3'),    tmpls.inquiry.m3,    team);
-    renderBubble(document.getElementById('m5'),    tmpls.inquiry.m5,    team);
-
-  } else if (currentFlow === 1) {
-    content.innerHTML = `
-      <div class="steps-wrap">
-        <div class="divider-label">STEP 1 — お客様へ</div>
-        <div class="step-card">
-          <div class="step-head"><div class="step-badge">1</div><div class="step-info"><div class="step-title">成約後メッセージ</div><div class="step-desc">お客様への感謝・今後の案内</div></div></div>
-          <div class="msg-wrap"><div class="msg-bubble" id="s1"></div><button class="copy-btn" onclick="copyMsg('s1')">📋 コピーする</button></div>
-        </div>
-
-        <div class="divider-label">STEP 2 — グループ報告</div>
-        <div class="step-card">
-          <div class="step-head"><div class="step-badge teal">2</div><div class="step-info"><div class="step-title">グループLINE報告</div><div class="step-desc">チームへの成約報告・依頼</div></div></div>
-          <div class="msg-wrap">
-            <span class="msg-label">報告 ①</span>
-            <div class="msg-bubble" id="s2a"></div>
-            <button class="copy-btn" onclick="copyMsg('s2a')">📋 コピーする</button>
-          </div>
-          <div class="msg-wrap">
-            <span class="msg-label">報告 ②（引き継ぎ依頼）</span>
-            <div class="msg-bubble" id="s2b"></div>
-            <button class="copy-btn" onclick="copyMsg('s2b')">📋 コピーする</button>
-          </div>
-        </div>
-
-        <div class="divider-label">STEP 3 — カウンセリング報告</div>
-        <div class="step-card">
-          <div class="step-head"><div class="step-badge teal">3</div><div class="step-info"><div class="step-title">カウンセリンググループ報告</div><div class="step-desc">専用グループへの成約報告</div></div></div>
-          <div class="msg-wrap"><div class="msg-bubble" id="s3"></div><button class="copy-btn" onclick="copyMsg('s3')">📋 コピーする</button></div>
-        </div>
-
-        <div class="divider-label">STEP 4 — シート記入</div>
-        <div class="step-card">
-          <div class="step-head"><div class="step-badge indigo">4</div><div class="step-info"><div class="step-title">シート記入（1・2・3）</div><div class="step-desc">全シートに成約情報を記入</div></div></div>
-          <div class="action-wrap">
-            <div class="action-item"><input type="checkbox"><span class="action-label">カウンセリングシート記入</span><a class="open-link" href="${cs}" target="_blank">開く</a></div>
-            <div class="action-item"><input type="checkbox"><span class="action-label">チームシート記入</span><a class="open-link" href="${tm}" target="_blank">開く</a></div>
-            <div class="action-item"><input type="checkbox"><span class="action-label">店舗シート記入</span><a class="open-link" href="${st}" target="_blank">開く</a></div>
-          </div>
-        </div>
-      </div>`;
-    renderBubble(document.getElementById('s1'),  tmpls.contract.s1,  team);
-    renderBubble(document.getElementById('s2a'), tmpls.contract.s2a, team);
-    renderBubble(document.getElementById('s2b'), tmpls.contract.s2b, team);
-    renderBubble(document.getElementById('s3'),  tmpls.contract.s3,  team);
-
-  } else {
-    content.innerHTML = `
-      <div class="steps-wrap">
-        <div class="divider-label">STEP 1 — フォローメッセージ</div>
-        <div class="step-card">
-          <div class="step-head"><div class="step-badge">1</div><div class="step-info"><div class="step-title">未成約フォローメッセージ</div><div class="step-desc">検討中のお客様へのフォロー</div></div></div>
-          <div class="msg-wrap"><div class="msg-bubble" id="u1"></div><button class="copy-btn" onclick="copyMsg('u1')">📋 コピーする</button></div>
-        </div>
-
-        <div class="divider-label">STEP 2 — シート記入</div>
-        <div class="step-card">
-          <div class="step-head"><div class="step-badge indigo">2</div><div class="step-info"><div class="step-title">シート記入（1・2・3）</div><div class="step-desc">全シートに情報を記入</div></div></div>
-          <div class="action-wrap">
-            <div class="action-item"><input type="checkbox"><span class="action-label">カウンセリングシート記入</span><a class="open-link" href="${cs}" target="_blank">開く</a></div>
-            <div class="action-item"><input type="checkbox"><span class="action-label">チームシート記入</span><a class="open-link" href="${tm}" target="_blank">開く</a></div>
-            <div class="action-item"><input type="checkbox"><span class="action-label">店舗シート記入</span><a class="open-link" href="${st}" target="_blank">開く</a></div>
-          </div>
-        </div>
-
-        <div class="divider-label">STEP 3 — グループ報告</div>
-        <div class="step-card">
-          <div class="step-head"><div class="step-badge teal">3</div><div class="step-info"><div class="step-title">グループ報告</div><div class="step-desc">シート記入完了の報告</div></div></div>
-          <div class="msg-wrap"><div class="msg-bubble" id="u3"></div><button class="copy-btn" onclick="copyMsg('u3')">📋 コピーする</button></div>
-        </div>
-      </div>`;
-    renderBubble(document.getElementById('u1'), tmpls.nocontract.u1, team);
-    renderBubble(document.getElementById('u3'), tmpls.nocontract.u3, team);
-  }
+  content.innerHTML = `
+    <div class="steps-wrap">
+      <div class="divider-label">STEP 1 — 日程確定</div>
+      <div class="step-card">
+        <div class="step-head"><div class="step-badge">1</div><div class="step-info"><div class="step-title">日程確定メッセージ</div><div class="step-desc">当日詳細の送付</div></div></div>
+        <div class="msg-wrap"><div class="msg-bubble" id="m3"></div><button class="copy-btn" onclick="copyMsg('m3')">📋 コピーする</button></div>
+      </div>
+      <div class="divider-label">STEP 2 — 前日リマインド</div>
+      <div class="step-card">
+        <div class="step-head"><div class="step-badge">2</div><div class="step-info"><div class="step-title">前日リマインド</div><div class="step-desc">カウンセリング前日に送信</div></div></div>
+        <div class="msg-wrap"><div class="msg-bubble" id="m5"></div><button class="copy-btn" onclick="copyMsg('m5')">📋 コピーする</button></div>
+      </div>
+    </div>`;
+  renderBubble(document.getElementById('m3'), tmpls.inquiry.m3, team);
+  renderBubble(document.getElementById('m5'), tmpls.inquiry.m5, team);
 }
 
-// ──────────────────────────────────────────
-// 全メッセージ再描画
-// ──────────────────────────────────────────
 function renderAll() {
   if (!currentTeam) return;
   const team = currentTeam;
   const tmpls = buildTemplates(team);
-  const ids = {
-    m1: tmpls.inquiry.m1, m_adj: tmpls.inquiry.m_adj,
-    m3: tmpls.inquiry.m3, m5: tmpls.inquiry.m5,
-    s1: tmpls.contract.s1, s2a: tmpls.contract.s2a,
-    s2b: tmpls.contract.s2b, s3: tmpls.contract.s3,
-    u1: tmpls.nocontract.u1, u3: tmpls.nocontract.u3,
-  };
-  Object.entries(ids).forEach(([id, tmpl]) => {
+  [['m3', tmpls.inquiry.m3], ['m5', tmpls.inquiry.m5]].forEach(([id, tmpl]) => {
     const el = document.getElementById(id);
     if (el) renderBubble(el, tmpl, team);
   });
 }
 
-// ──────────────────────────────────────────
-// コピー
-// ──────────────────────────────────────────
 function copyMsg(id) {
   const el = document.getElementById(id);
   if (!el) return;
-  const text = el.innerText;
-  navigator.clipboard.writeText(text).then(() => {
+  navigator.clipboard.writeText(el.innerText).then(() => {
     const btn = el.nextElementSibling;
     const orig = btn.innerHTML;
     btn.innerHTML = '✅ コピーしました！';
@@ -672,17 +1189,29 @@ function copyMsg(id) {
   });
 }
 
-// ──────────────────────────────────────────
-// ナビ
-// ──────────────────────────────────────────
 function goBack() {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-home').classList.add('active');
+  const cur = document.querySelector('.screen.active').id;
+  if (cur === 'screen-flow') {
+    showSection('stores');
+  } else {
+    goMain();
+  }
+}
+
+function goMain() {
+  showScreen('screen-main');
   document.getElementById('backBtn').style.display = 'none';
   document.getElementById('customerName').value = '';
   document.getElementById('appointmentDate').value = '';
-  ['slot1','slot2','slot3','slot4','slot5'].forEach(id => { document.getElementById(id).value = ''; });
+  document.getElementById('reportName').value = '';
+  document.getElementById('reportDate').value = '';
+  document.getElementById('inqName').value = '';
+  ['inqSlot1','inqSlot2','inqSlot3','inqSlot4','inqSlot5'].forEach(id => { document.getElementById(id).value = ''; });
   window.scrollTo(0, 0);
+}
+
+function goHome() {
+  goMain();
 }
 
 function toggleSlots() {
@@ -690,9 +1219,6 @@ function toggleSlots() {
   document.getElementById('slotsArrow').classList.toggle('open');
 }
 
-// ──────────────────────────────────────────
-// 初期化
-// ──────────────────────────────────────────
 buildHome();
 </script>
 </body>
